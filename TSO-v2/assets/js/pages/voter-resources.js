@@ -311,8 +311,9 @@ let birthStateMap = {};
     const hits = zipToSD[key] || [];
     if (hits.length === 0) {
       out.style.display = "";
-      out.innerHTML = `<div style="border:1px solid #D4AF37;border-radius:12px;padding:14px;">
-        <strong>No match</strong> for ZIP ${escapeHtml(normalizeZipKey(raw))}. Some ZIP codes span multiple districts—try a 9-digit ZIP if you have it.
+      out.innerHTML = `<div class="ballot-empty">
+        <strong>No ballot match found</strong>
+        <span>We could not match ZIP ${escapeHtml(normalizeZipKey(raw))}. Some ZIP codes cross district lines; use Verify District for an address-level result.</span>
       </div>`;
       return;
     }
@@ -330,55 +331,17 @@ let birthStateMap = {};
     out.innerHTML = renderCombinedCard(key, uniq);
   }
 
-  function renderDistrictCard(zip, abbr, num) {
-    const full = STATE_ABBR_TO_NAME[abbr.toUpperCase()] || abbr;
-    const roster = stateRosterMap[full] || [];
-    const meta   = stateMetaMap[full] || {};
-    const primary = meta.date ? ` (Primary: ${formatDate(meta.date)})` : "";
-
-    // House for this district
-    const house = roster.filter(r =>
-      /U\.?S\.?\s*House/i.test(r.position) && districtMatches(r.district, abbr, num)
-    );
-    // Statewide
-    const senate   = roster.filter(r => /U\.?S\.?\s*Senate/i.test(r.position));
-    const governor = roster.filter(r => /Governor/i.test(r.position));
-
-    return `
-      <div style="border:1px solid #D4AF37;border-radius:12px;padding:16px;margin:12px 0;background:#0B1C3D10;">
-        <div style="font-weight:700;margin-bottom:6px;">ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District ${escapeHtml(num)} <span style="opacity:.7">${primary}</span></div>
-        ${renderList("U.S. House Race", house,   (c)=> liCandidate(c))}
-        ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
-        ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
-        ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)}</a></div>` : ""}
-      </div>
-    `;
-  }
-
-  function districtMatches(cell, abbr, num) {
-    if (!cell) return false;
-    const v = String(cell).trim().toUpperCase();
-    const target = `${abbr.toUpperCase()}-${String(num).trim()}`; // e.g., AZ-2
-    if (v === target) return true;
-    if (v.endsWith(`-${String(num).trim()}`)) return true;       // handles stray prefixes
-    // Handle AtLarge case when sheet uses AK-AtLarge but ZIP says "1"
-    if (String(num).trim() === "1" && v === `${abbr.toUpperCase()}-ATLARGE`) return true;
-    return false;
-  }
-
   function renderList(title, rows, fmt) {
     if (!rows || rows.length === 0) {
-      return `<div style="margin:8px 0;"><div style="font-weight:600;">${title}</div><div style="opacity:.75;">No race.</div></div>`;
+      return `<section class="race-group">
+        <h3>${escapeHtml(title)}</h3>
+        <p class="race-empty">No race listed.</p>
+      </section>`;
     }
-    return `<div style="margin:8px 0;">
-      <div style="font-weight:600;">${title}</div>
-      <ul style="margin:6px 0 0 18px;padding:0;">${rows.map(fmt).join("")}</ul>
-    </div>`;
-  }
-
-  function li(name, position, extra) {
-    const x = extra ? ` — <span style="opacity:.8;">${escapeHtml(extra)}</span>` : "";
-    return `<li>${escapeHtml(name)} <span style="opacity:.8;">(${escapeHtml(position)})</span>${x}</li>`;
+    return `<section class="race-group">
+      <h3>${escapeHtml(title)}</h3>
+      <ul class="candidate-list">${rows.map(fmt).join("")}</ul>
+    </section>`;
   }
 
   function isTrumpAligned(v) {
@@ -394,25 +357,34 @@ let birthStateMap = {};
   }
 
   function liCandidate(c) {
-    const extra = c.district ? ` — <span style="opacity:.8;">${escapeHtml(c.district)}</span>` : "";
+    const candidateMeta = [c.position, c.district].filter(Boolean).map(escapeHtml).join(" · ");
 
     const trumpBadge = isTrumpAligned(c.aligned)
-      ? ` <span title="Trump-aligned" style="margin-left:6px; padding:2px 6px; border-radius:8px; background:#8B0000; color:#fff; font-size:12px; font-weight:700;">TRUMP</span>`
+      ? `<span class="candidate-badge trump" title="Trump-aligned">TRUMP</span>`
       : "";
 
     const impeachBadge = isImpeachFlag(c.impeach)
-      ? ` <span title="Willing to hold Trump accountable" style="margin-left:6px; padding:2px 6px; border-radius:8px; background: var(--reliability); color:#fff; font-size:12px; font-weight:700;">IMPEACH</span>`
+      ? `<span class="candidate-badge impeach" title="Willing to hold Trump accountable">IMPEACH</span>`
       : "";
 
     const site = c.website
-      ? ` <a class="candidate-site" href="${escapeHtml(c.website)}" target="_blank" rel="noopener" style="margin-left:8px; font-size:12px;">Candidate Website</a>`
+      ? `<a class="candidate-site" href="${escapeHtml(c.website)}" target="_blank" rel="noopener">Website <span aria-hidden="true">↗</span></a>`
       : "";
 
     const positions = c.key
-      ? ` <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${hasOwlAccess()}">View 11 Positions</button>`
+      ? `<button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${hasOwlAccess()}">
+          <span class="position-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
+          <span>11 Positions</span>
+        </button>`
       : "";
 
-    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}${positions}</li>`;
+    return `<li class="candidate-row">
+      <div class="candidate-details">
+        <div class="candidate-name-line"><strong>${escapeHtml(c.name)}</strong><span class="candidate-badges">${trumpBadge}${impeachBadge}</span></div>
+        ${candidateMeta ? `<span class="candidate-office">${candidateMeta}</span>` : ""}
+      </div>
+      <div class="candidate-row-actions">${site}${positions}</div>
+    </li>`;
   }
 
   function escapeHtml(s) {
@@ -433,8 +405,8 @@ let birthStateMap = {};
   function renderCandidateCard(candidate) {
     const location = [candidate.stateFullName, candidate.district].filter(Boolean).join(' • ');
     const website = candidate.website
-      ? `<a class="candidate-site-link" href="${escapeHtml(candidate.website)}" target="_blank" rel="noopener noreferrer">Candidate Website</a>`
-      : '<span style="color:var(--text-muted)">Website not listed</span>';
+      ? `<a class="candidate-site-link" href="${escapeHtml(candidate.website)}" target="_blank" rel="noopener noreferrer">Website <span aria-hidden="true">↗</span></a>`
+      : '<span class="candidate-site-unavailable">Website not listed</span>';
 
     return `
       <article class="candidate-card">
@@ -443,7 +415,10 @@ let birthStateMap = {};
         <div>${candidateBadges(candidate)}</div>
         <div class="candidate-card-actions">
           ${website}
-          <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">View 11 Positions</button>
+          <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">
+            <span class="position-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
+            <span>11 Positions</span>
+          </button>
         </div>
       </article>`;
   }
@@ -593,16 +568,18 @@ const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
       .sort(sortByFirstName);
 
     return `
-      <div style="border:1px solid #D4AF37;border-radius:12px;padding:16px;margin:12px 0;background:#0B1C3D10;">
-        <div style="font-weight:700;margin-bottom:6px;">
-          ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District${districtNums.length > 1 ? "s" : ""} ${escapeHtml(districtsStr)}
-        </div>
-        ${statusLine ? `<div style="opacity:.7; margin-bottom:6px;">${statusLine}</div>` : ""}
+      <article class="ballot-result-card">
+        <header class="ballot-result-header">
+          <p class="ballot-result-eyebrow">Ballot area</p>
+          <h3>ZIP ${escapeHtml(zip)}</h3>
+          <p>${escapeHtml(full)} · District${districtNums.length > 1 ? "s" : ""} ${escapeHtml(districtsStr)}</p>
+          ${statusLine ? `<div class="ballot-status-line">${statusLine}</div>` : ""}
+        </header>
         ${renderList("U.S. House Race", house, (c)=> liCandidate(c))}
         ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
         ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
-        ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)}</a></div>` : ""}
-      </div>
+        ${meta.url ? `<div class="ballot-register-row"><a class="ballot-register-link" href="${escapeHtml(meta.url)}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)} <span aria-hidden="true">↗</span></a></div>` : ""}
+      </article>
     `;
   }
 
