@@ -501,6 +501,14 @@ textarea {
 }
 
 @media (max-width: 1180px) {
+  .owl-site-header {
+    /* iOS Safari treats fixed children as header-bound when backdrop-filter
+       is present, which collapses the navigation drawer to a thin strip. */
+    background: rgba(26, 43, 76, 0.98);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
   .owl-header-inner {
     display: grid;
     grid-template-columns: 44px minmax(0, 1fr) 44px;
@@ -528,11 +536,13 @@ textarea {
   .owl-primary-nav {
     position: fixed;
     top: var(--owl-header-height);
-    bottom: 0;
+    bottom: auto;
     left: 0;
     z-index: 9002;
     display: block;
     width: min(88vw, 360px);
+    height: calc(100vh - var(--owl-header-height));
+    height: calc(100dvh - var(--owl-header-height));
     padding: 18px 14px calc(24px + env(safe-area-inset-bottom));
     overflow-y: auto;
     border-right: 1px solid rgba(212, 175, 55, 0.28);
