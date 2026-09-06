@@ -684,3 +684,58 @@
     border-radius: 12px;
   }
 }
+
+/* Give the feed the full useful width of a phone screen. */
+@media (max-width: 600px) {
+  .site-page.site-page--owl-feed {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .site-page--owl-feed > .container {
+    width: 100%;
+    max-width: none;
+    margin-top: 28px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  #perch-feed-section,
+  #perch-feed-list {
+    width: 100%;
+  }
+
+  #perch-feed-list .so-card {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+    padding: 16px 14px;
+  }
+
+  .so-card-title-row {
+    gap: 8px;
+  }
+
+  .so-author-row {
+    gap: 6px;
+  }
+
+  .feed-card-brand-mark {
+    width: 70px;
+  }
+
+  .so-actions {
+    gap: 6px;
+  }
+
+  .so-icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .so-card-body {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}

@@ -4,13 +4,13 @@
   const pages = [
     ["home", "Home", "index.html"],
     ["owl-feed", "Owl Feed", "owl-feed.html"],
-    ["credibility-scores", "Credibility Scores", "credibility-scores.html"],
+    ["credibility-scores", "Credibility", "credibility-scores.html"],
     ["tru-rankings", "T.R.U. Rankings", "tru-rankings.html"],
     ["voter-resources", "Voter Resources", "voter-resources.html"],
-    ["media-influence-quiz", "Media Influence Quiz", "media-influence-quiz.html"],
-    ["fact-check-hub", "Fact Check Hub", "fact-check-hub.html"],
-    ["constitution", "The Constitution", "constitution.html"],
-    ["support", "Support & Connect", "support.html"]
+    ["media-influence-quiz", "Media Quiz", "media-influence-quiz.html"],
+    ["fact-check-hub", "Fact Check", "fact-check-hub.html"],
+    ["constitution", "Constitution", "constitution.html"],
+    ["support", "Support", "support.html"]
   ];
 
   function pageLinks(activePage) {
@@ -82,7 +82,7 @@
       }
     });
     window.addEventListener("resize", () => {
-      if (window.innerWidth > 1180 && menu?.dataset.open === "true") setMenu(false);
+      if (window.innerWidth > 1240 && menu?.dataset.open === "true") setMenu(false);
     });
   }
 
