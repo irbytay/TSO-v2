@@ -1,45 +1,48 @@
-/* Behavior migrated from newcontact3.html. */
-document.getElementById('score-request-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
+(function () {
+  "use strict";
 
-    const form = e.target;
-    const formData = new FormData(form);
+  const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
+  const OWL_ADMINISTRATOR_ID = "5f96faeb-ec9e-4069-9b91-cbc65e422f73";
+  const PROFILE_BUCKET = "app-images";
+
+  async function loadProfileImage() {
+    const image = document.getElementById("support-profile-image");
+    if (!image) return;
+
+    const url = new URL(`${SUPABASE_URL}/rest/v1/owl_profile`);
+    url.searchParams.set("select", "avatar_path");
+    url.searchParams.set("id", `eq.${OWL_ADMINISTRATOR_ID}`);
+    url.searchParams.set("limit", "1");
 
     try {
-      const res = await fetch("https://formspree.io/f/mwpodgrw", {
-        method: "POST",
-        body: formData,
-        headers: { 'Accept': 'application/json' }
+      const response = await fetch(url.toString(), {
+        headers: {
+          Accept: "application/json",
+          apikey: SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        },
       });
 
-      const responseText = document.getElementById('form-response');
-      if (res.ok) {
-        responseText.textContent = "✅ Thanks for your submission! We'll review it shortly.";
-        form.reset();
-      } else {
-        responseText.textContent = "⚠️ There was a problem submitting your request. Try again later.";
-      }
-    } catch (err) {
-      document.getElementById('form-response').textContent = "⚠️ Network error. Please try again.";
+      if (!response.ok) return;
+      const rows = await response.json();
+      const avatarPath = String(rows?.[0]?.avatar_path || "").trim();
+      if (!avatarPath) return;
+
+      const safePath = avatarPath
+        .split("/")
+        .map((part) => encodeURIComponent(part))
+        .join("/");
+      image.src = `${SUPABASE_URL}/storage/v1/object/public/${PROFILE_BUCKET}/${safePath}`;
+    } catch (_) {
+      // Keep the bundled profile image when Supabase is unavailable.
     }
+  }
+
+  document.getElementById("support-open-owl-access")?.addEventListener("click", () => {
+    window.StrategicOwlAccess?.open();
   });
 
-function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
-  }
-
-  function closeMenuOnOutsideClick(event) {
-    const navMenu = document.getElementById("navMenu");
-    const menuToggle = document.querySelector(".menu-toggle");
-
-    if (
-      navMenu.classList.contains("show") &&
-      !navMenu.contains(event.target) &&
-      !menuToggle.contains(event.target)
-    ) {
-      navMenu.classList.remove("show");
-    }
-  }
-
-  document.addEventListener("click", closeMenuOnOutsideClick);
+  loadProfileImage();
+})();
