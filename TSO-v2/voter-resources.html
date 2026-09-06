@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Voter Resources | The Strategic Owl</title>
+  <title>Voter Dashboard | The Strategic Owl</title>
   <meta name="description" content="Find voter information, candidates, districts, and researched candidate positions." />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/owl-mark.png" />
-  <link rel="stylesheet" href="assets/css/site.css" />
-  <link rel="stylesheet" href="assets/css/pages/voter-resources.css?v=20260906-1" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20260906-2" />
+  <link rel="stylesheet" href="assets/css/pages/voter-resources.css?v=20260906-4" />
   <script src="assets/js/site-shell.js" defer></script>
   <script src="assets/js/owl-access.js" defer></script>
 </head>
@@ -19,11 +19,8 @@
 
   <main id="main-content" class="site-page site-page--voter-resources" tabindex="-1">
     <div class="voter-dashboard">
-      <header class="voter-hero">
-        <p class="voter-eyebrow">Voting information, without the noise</p>
-        <h1>Voter Resources</h1>
-        <p class="voter-intro">Find official election links, verify your district, and explore the candidates on your ballot.</p>
-
+      <header class="voter-heading">
+        <h1>Voter Dashboard</h1>
         <div class="voter-tru" aria-label="Truth, Reliability, Understanding">
           <div class="voter-tru-bars" aria-hidden="true">
             <span class="truth"></span>
@@ -38,92 +35,58 @@
         </div>
       </header>
 
-      <section class="voter-tools-grid" aria-label="Official voter information">
-        <article class="voter-glass-panel voter-tool-card">
-          <div class="voter-tool-heading">
-            <span class="voter-tool-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M5 3v18M5 5h11l-2 4 2 4H5"></path></svg>
-            </span>
-            <div>
-              <h2>State election information</h2>
-              <p>Primary date, registration deadline, and the official state registration page.</p>
-            </div>
-          </div>
-          <label class="voter-field-label" for="state-select">Your state</label>
-          <select id="state-select">
-            <option value="">Select your state</option>
-          </select>
-
-          <div id="state-output" class="state-output">
-            <input id="state-url" readonly aria-label="Official state election website" />
-            <div id="state-date" class="state-date"></div>
-            <div id="state-deadline" class="state-deadline"></div>
-            <div class="state-actions">
-              <a id="state-open" href="#" target="_blank" rel="noopener">Register to Vote</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="voter-glass-panel voter-tool-card">
-          <div class="voter-tool-heading">
-            <span class="voter-tool-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v5h5M10 13h5M10 17h5"></path></svg>
-            </span>
-            <div>
-              <h2>Birth certificate information</h2>
-              <p>Open the official request page for the state where you were born.</p>
-            </div>
-          </div>
-          <label class="voter-field-label" for="birth-state-select">Birth state</label>
-          <select id="birth-state-select">
-            <option value="">Select your birth state</option>
-          </select>
-
-          <div id="birth-state-output" class="state-output">
-            <input id="birth-state-url" readonly aria-label="Official birth certificate website" />
-            <div class="state-actions">
-              <a id="birth-state-open" href="#" target="_blank" rel="noopener">Birth Certificate Info</a>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="voter-glass-panel ballot-lookup" aria-labelledby="ballot-lookup-title">
-        <div class="section-heading-row">
-          <div>
-            <p class="section-kicker">Your ballot</p>
-            <h2 id="ballot-lookup-title">Check My Ballot</h2>
-          </div>
-          <span class="section-status">Public information</span>
+      <section class="voter-section candidate-check" aria-labelledby="candidate-check-title">
+        <h2 id="candidate-check-title">Candidate Check</h2>
+        <div class="voter-glass-card candidate-check-card">
+          <p>
+            Enter your ZIP code to find U.S. House candidates connected to your area, plus U.S. Senate and governor candidates when available. Some ZIP codes cover more than one district, so confirm yours through House.gov.
+          </p>
+          <label class="visually-hidden" for="zip-input">ZIP code</label>
+          <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" />
+          <button id="zip-go" class="voter-primary-button" type="button">View Candidates</button>
         </div>
-        <p class="section-description">
-          Enter your ZIP code to see relevant House, Senate, and governor races. Verify your exact House district with your street address when a ZIP crosses district lines.
-        </p>
-
-        <div class="zip-lookup">
-          <label class="voter-field-label" for="zip-input">ZIP code</label>
-          <div class="zip-controls">
-            <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9-]*" autocomplete="postal-code" maxlength="10" placeholder="e.g. 85301" />
-            <button id="zip-go" class="voter-button voter-button-primary" type="button">View ballot</button>
-            <button id="zip-validate" class="voter-button voter-button-secondary" type="button">Verify district</button>
-          </div>
-        </div>
-
         <div id="zip-output" class="zip-output" style="display:none"></div>
-        <p class="data-note">Candidate records and alignment indicators are updated as research is completed.</p>
+        <p class="voter-data-note">Candidate information can change. Confirm your district through House.gov and your ballot through your state or local election office.</p>
       </section>
 
-      <section class="voter-glass-panel candidate-search" aria-labelledby="candidate-search-title">
-        <div class="section-heading-row">
-          <div>
-            <p class="section-kicker">Candidate directory</p>
-            <h2 id="candidate-search-title">Search for a Candidate</h2>
+      <section class="voter-section register-section" aria-labelledby="register-title">
+        <h2 id="register-title">Register to Vote</h2>
+        <p class="voter-section-copy">Choose your state to find the official registration page and the date to register by.</p>
+
+        <label class="visually-hidden" for="state-select">Select your state</label>
+        <select id="state-select" class="voter-pill-select">
+          <option value="">Select your state</option>
+        </select>
+
+        <div id="state-output" class="state-output voter-glass-card">
+          <input id="state-url" type="hidden" readonly />
+          <div id="state-date" class="state-date"></div>
+          <div id="state-deadline" class="state-deadline"></div>
+          <div class="state-actions">
+            <a id="state-open" href="#" target="_blank" rel="noopener">Register to Vote</a>
           </div>
         </div>
-        <p class="section-description">Search by full or partial name. Basic candidate information is available to everyone.</p>
+
+        <p class="voter-section-copy birth-copy">Select your birth state to view the official birth certificate request link.</p>
+        <label class="visually-hidden" for="birth-state-select">Select your birth state</label>
+        <select id="birth-state-select" class="voter-pill-select">
+          <option value="">Select your birth state</option>
+        </select>
+
+        <div id="birth-state-output" class="state-output voter-glass-card">
+          <input id="birth-state-url" type="hidden" readonly />
+          <div class="state-actions">
+            <a id="birth-state-open" href="#" target="_blank" rel="noopener">Birth Certificate Information</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="voter-section candidate-search" aria-labelledby="candidate-search-title">
+        <h2 id="candidate-search-title">Find a Candidate</h2>
+        <p class="voter-section-copy">Search by full or partial name. Basic candidate information is available to everyone.</p>
         <div class="candidate-search-row">
-          <input id="candidate-name-input" type="search" autocomplete="off" placeholder="Enter candidate name" aria-describedby="candidate-search-status" />
-          <button id="candidate-name-go" class="voter-button voter-button-primary" type="button">Search</button>
+          <input id="candidate-name-input" type="search" autocomplete="off" placeholder="Candidate name" aria-describedby="candidate-search-status" />
+          <button id="candidate-name-go" class="voter-primary-button" type="button">Search</button>
         </div>
         <p class="candidate-search-status" id="candidate-search-status" role="status"></p>
         <div class="candidate-results" id="candidate-name-results"></div>
@@ -134,20 +97,22 @@
       <div class="owl-modal-card">
         <div class="owl-modal-header">
           <div>
-            <p class="owl-modal-kicker">Owl Access research</p>
             <h2 id="owl-positions-title">Candidate Positions</h2>
             <p id="owl-positions-candidate"></p>
           </div>
           <button class="owl-close-button" type="button" data-close-modal aria-label="Close candidate positions">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
           </button>
         </div>
-        <div class="owl-topic-grid" id="owl-topic-grid"></div>
+        <div class="owl-topic-list" id="owl-topic-grid"></div>
+        <p class="owl-research-note">
+          The Strategic Owl summarizes candidates’ stated positions using official campaign websites and other primary sources. Technology supports the research, and I review the results. Only positions supported by reliable direct sources are shown.
+        </p>
       </div>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/pages/voter-resources.js?v=20260906-1" defer></script>
+  <script src="assets/js/pages/voter-resources.js?v=20260906-4" defer></script>
 </body>
 </html>

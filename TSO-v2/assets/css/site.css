@@ -166,6 +166,55 @@ textarea {
   text-wrap: pretty;
 }
 
+/* Shared TRU signature used by every page. */
+body.site-body .divider-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 354px);
+  margin: 24px auto 32px;
+}
+
+body.site-body .divider-bar,
+body.site-body .divider-labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+body.site-body .divider-bar > div {
+  width: auto;
+  height: 6px;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+body.site-body .divider-bar > .truth {
+  background: var(--owl-truth);
+}
+
+body.site-body .divider-bar > .reliability {
+  background: var(--owl-reliability);
+}
+
+body.site-body .divider-bar > .understanding {
+  background: var(--owl-understanding);
+}
+
+body.site-body .divider-labels {
+  margin-top: 8px;
+  color: var(--owl-muted);
+  font-size: 0.96rem;
+  line-height: 1.2;
+}
+
+body.site-body .divider-labels > span {
+  width: auto;
+  color: inherit;
+  text-align: center;
+}
+
 .site-page table {
   max-width: 100%;
 }

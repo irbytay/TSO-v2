@@ -1,16 +1,4 @@
 /* Behavior migrated from voterdash.html. */
-// --- Mobile menu toggle (restores hamburger functionality) ---
-  function toggleMenu() {
-    const menu = document.getElementById("mobileMenu");
-    const btn  = document.getElementById("menuToggle");
-    if (!menu) return;
-    const nowShowing = menu.classList.toggle("show");
-    if (btn) {
-      const expanded = btn.getAttribute("aria-expanded") === "true";
-      btn.setAttribute("aria-expanded", String(!expanded));
-    }
-    try { console.log("toggleMenu: show=", nowShowing); } catch(_) {}
-  }
   // --- CONFIG (yours, unchanged) ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -172,10 +160,9 @@ let birthStateMap = {};
   // ========== NEW: ZIP → DISTRICT + CANDIDATES ================
   // ============================================================
 
-  // Ranges from your screenshots:
-  //  - State Elections roster: AH (State full), AI (Position), AJ (Name), AK (District like "AZ-2" or "AK-AtLarge")
-  //  - District2Zipcode map:   A (ZIP), C (State abbr), F (District number)
-  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AN10000");
+  // Match the Flutter Voter Dashboard ranges exactly.
+  // AO:AY contain the 11 researched candidate positions.
+  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AY100000");
   const RANGE_ZIPMAP   = encodeURIComponent("'District2Zipcode'!A1:F46654");
 
   // State -> [{ position, name, district }]
@@ -187,18 +174,162 @@ let birthStateMap = {};
   // ZIP -> [{ stateAbbr, districtNum }]
   let zipToSD = {};
 
-  const OWL_POSITION_TOPICS = [
-    "Reproductive Rights",
-    "Cannabis Reform",
-    "Democracy & Elections",
-    "Gun Policy",
-    "Climate & Environment",
-    "Education & Curriculum",
-    "Healthcare Access",
-    "Immigration & Border",
-    "Civil & LGBTQ+ Rights",
-    "Economic Policy & Labor",
-    "Religion & Governance"
+  const POSITION_DEFINITIONS = [
+    {
+      topic: "Reproductive Rights",
+      explicit: {
+        "broad access": "Supports broad legal abortion access.",
+        "access with limits": "Supports legal abortion access with limits.",
+        "restrictions with exceptions": "Favors abortion restrictions with limited exceptions.",
+        "broad restrictions": "Favors broad abortion restrictions."
+      },
+      support: "Supports abortion access.",
+      limited: "Supports abortion access with limits.",
+      mixed: "Has a mixed abortion record.",
+      exceptions: "Favors abortion restrictions with limited exceptions.",
+      oppose: "Favors broad abortion restrictions."
+    },
+    {
+      topic: "Cannabis Reform",
+      explicit: {
+        "broad reform": "Supports broad cannabis reform.",
+        "limited reform": "Supports limited cannabis reform.",
+        "generally opposes reform": "Generally opposes cannabis reform.",
+        "opposes reform": "Opposes cannabis reform."
+      },
+      support: "Supports cannabis reform.",
+      limited: "Supports limited cannabis reform.",
+      mixed: "Has a mixed cannabis record.",
+      exceptions: "Opposes cannabis reform with limited exceptions.",
+      oppose: "Opposes cannabis reform."
+    },
+    {
+      topic: "Democracy & Elections",
+      explicit: {
+        "upholds safeguards": "Upholds certified results and democratic safeguards.",
+        "upholds with concerns": "Generally upholds certified results while raising concerns about some election rules.",
+        "challenges some safeguards": "Challenges some certified results or democratic safeguards.",
+        "rejects or undermines safeguards": "Rejects certified results or undermines democratic safeguards."
+      },
+      support: "Supports certified results and voting access.",
+      limited: "Accepts results with tighter voting rules.",
+      mixed: "Has a mixed election record.",
+      exceptions: "Challenges some results or safeguards.",
+      oppose: "Rejects certified results or democratic safeguards."
+    },
+    {
+      topic: "Gun Policy",
+      explicit: {
+        "stronger regulations": "Favors stronger firearm regulations.",
+        "targeted regulations": "Favors targeted firearm regulations.",
+        "generally fewer regulations": "Generally favors fewer firearm regulations with limited safeguards.",
+        "fewer regulations": "Favors fewer firearm regulations and broader gun rights."
+      },
+      support: "Favors stronger gun safety laws.",
+      limited: "Supports targeted gun restrictions.",
+      mixed: "Balances gun rights with added safeguards.",
+      exceptions: "Favors fewer restrictions with limited safeguards.",
+      oppose: "Favors fewer gun restrictions."
+    },
+    {
+      topic: "Climate & Environment",
+      explicit: {
+        "broad action": "Supports broad government climate action.",
+        "limited action": "Supports limited government climate action.",
+        "generally opposes action": "Generally opposes major government climate policies.",
+        "opposes major action": "Opposes major government climate policies."
+      },
+      support: "Supports broad climate action.",
+      limited: "Supports limited climate action.",
+      mixed: "Has a mixed climate record.",
+      exceptions: "Opposes major climate policies with limited exceptions.",
+      oppose: "Opposes major climate policies."
+    },
+    {
+      topic: "Education & Curriculum",
+      explicit: {
+        "opposes restrictions": "Generally opposes book and curriculum restrictions.",
+        "supports limited restrictions": "Supports limited book or curriculum restrictions.",
+        "supports targeted restrictions": "Supports targeted book or curriculum restrictions.",
+        "supports broad restrictions": "Supports broad book or curriculum restrictions."
+      },
+      support: "Supports inclusive public education.",
+      limited: "Supports it with some restrictions.",
+      mixed: "Has a mixed education record.",
+      exceptions: "Favors some book or curriculum restrictions.",
+      oppose: "Favors broad book or curriculum restrictions."
+    },
+    {
+      topic: "Healthcare Access",
+      explicit: {
+        "broad expansion": "Supports broad expansion of public healthcare access.",
+        "limited expansion": "Supports limited expansion of public healthcare access.",
+        "generally opposes expansion": "Generally opposes public healthcare expansion.",
+        "opposes expansion": "Opposes public healthcare expansion."
+      },
+      support: "Supports expanding healthcare access.",
+      limited: "Supports limited healthcare expansion.",
+      mixed: "Has a mixed healthcare record.",
+      exceptions: "Opposes expansion with limited exceptions.",
+      oppose: "Opposes expanding public healthcare programs."
+    },
+    {
+      topic: "Immigration & Border",
+      explicit: {
+        "pathways first": "Prioritizes legal pathways and immigration reform.",
+        "pathways with enforcement": "Favors legal pathways alongside stronger enforcement.",
+        "balanced or mixed": "Balances legal pathways with stronger enforcement.",
+        "enforcement with limited pathways": "Prioritizes enforcement while allowing limited legal pathways.",
+        "enforcement first": "Prioritizes immigration restrictions and enforcement."
+      },
+      support: "Supports legal pathways and immigration reform.",
+      limited: "Supports legal pathways with tighter enforcement.",
+      mixed: "Balances legal pathways with stricter enforcement.",
+      exceptions: "Prioritizes enforcement with limited legal pathways.",
+      oppose: "Prioritizes restrictions and enforcement."
+    },
+    {
+      topic: "Civil & LGBTQ+ Rights",
+      explicit: {
+        "broad protections": "Supports broad civil and LGBTQ+ protections.",
+        "protections with limits": "Supports civil and LGBTQ+ protections with limits.",
+        "opposes some protections": "Opposes some civil or LGBTQ+ protections.",
+        "opposes broad protections": "Opposes broad civil or LGBTQ+ protections."
+      },
+      support: "Supports broad civil and LGBTQ+ protections.",
+      limited: "Supports civil protections with limits.",
+      mixed: "Has a mixed civil-rights record.",
+      exceptions: "Opposes some protections with limited exceptions.",
+      oppose: "Opposes civil or LGBTQ+ protections."
+    },
+    {
+      topic: "Economic Policy & Labor",
+      explicit: {
+        "stronger protections": "Supports stronger union and worker protections.",
+        "limited additional protections": "Supports limited additional worker protections.",
+        "generally fewer protections": "Generally favors fewer labor and worker protections.",
+        "fewer protections": "Favors fewer labor and worker protections."
+      },
+      support: "Supports unions and worker protections.",
+      limited: "Supports limited worker protections.",
+      mixed: "Has a mixed labor record.",
+      exceptions: "Favors fewer labor protections with exceptions.",
+      oppose: "Favors fewer labor protections."
+    },
+    {
+      topic: "Religion & Governance",
+      explicit: {
+        "strong separation": "Supports strong church-state separation.",
+        "separation with accommodations": "Supports church-state separation with religious accommodations.",
+        "larger religious role with limits": "Favors a larger religious role in government with limits.",
+        "larger religious role": "Favors a larger religious role in government."
+      },
+      support: "Supports church-state separation.",
+      limited: "Supports separation with limited religious exceptions.",
+      mixed: "Has a mixed record on religion in government.",
+      exceptions: "Favors a larger religious role with limits.",
+      oppose: "Favors a larger religious role in government."
+    }
   ];
 
   let pendingCandidateKey = null;
@@ -242,7 +373,7 @@ let birthStateMap = {};
       const json = await res.json();
       const v = json.valueRanges || [];
 
-      // 1) Roster (AH:AN)
+      // 1) Roster (AH:AY)
       const rosterRows = (v[0] && v[0].values) || [];
       stateRosterMap = {};
       allCandidateRows = [];
@@ -265,7 +396,10 @@ let birthStateMap = {};
           district,
           aligned,
           impeach,
-          website
+          website,
+          positionValues: Array.from({ length: 11 }, (_, positionIndex) =>
+            String(r[positionIndex + 7] || "").trim()
+          )
         };
         (stateRosterMap[stFull] ||= []).push(candidate);
         allCandidateRows.push(candidate);
@@ -310,10 +444,13 @@ let birthStateMap = {};
 
     const hits = zipToSD[key] || [];
     if (hits.length === 0) {
+      const normalizedZip = normalizeZipKey(raw);
+      const houseUrl = `https://ziplook.house.gov/htbin/findrep_house?ZIP=${encodeURIComponent(normalizedZip)}`;
       out.style.display = "";
       out.innerHTML = `<div class="ballot-empty">
         <strong>No ballot match found</strong>
-        <span>We could not match ZIP ${escapeHtml(normalizeZipKey(raw))}. Some ZIP codes cross district lines; use Verify District for an address-level result.</span>
+        <span>We could not match ZIP ${escapeHtml(normalizedZip)}. Some ZIP codes cross district lines.</span>
+        <a class="ballot-secondary-link" href="${houseUrl}" target="_blank" rel="noopener">Confirm My District on House.gov</a>
       </div>`;
       return;
     }
@@ -356,25 +493,86 @@ let birthStateMap = {};
     return s === "yes" || s === "y" || s === "true" || s === "1";
   }
 
+  function usableWebsite(value) {
+    const raw = String(value || "").trim();
+    if (!raw || /^(n\/?a|none|null|not available)$/i.test(raw)) return "";
+    try {
+      const url = new URL(raw);
+      return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function normalizePositionValue(rawValue) {
+    const raw = String(rawValue || "");
+    const separatorIndex = raw.indexOf("||");
+    const label = separatorIndex >= 0 ? raw.slice(0, separatorIndex) : raw;
+    return label.toLowerCase().trim().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
+  }
+
+  function positionExplanation(rawValue) {
+    const raw = String(rawValue || "");
+    const separatorIndex = raw.indexOf("||");
+    return separatorIndex < 0
+      ? ""
+      : raw.slice(separatorIndex + 2).trim().replace(/\s+/g, " ");
+  }
+
+  function positionLanguage(rawValue, definition) {
+    const value = normalizePositionValue(rawValue);
+    if (!value || value === "unclear" || value.startsWith("#")) return "";
+
+    let overview = definition.explicit[value] || "";
+    if (!overview && ["support", "yes", "y", "true", "1"].includes(value)) {
+      overview = definition.support;
+    } else if (!overview && ["support with limits", "limited support", "conditional support"].includes(value)) {
+      overview = definition.limited;
+    } else if (!overview && value === "mixed") {
+      overview = definition.mixed;
+    } else if (!overview && ["oppose with exceptions", "opposition with exceptions", "conditional opposition"].includes(value)) {
+      overview = definition.exceptions;
+    } else if (!overview && ["oppose", "no", "n", "false", "0"].includes(value)) {
+      overview = definition.oppose;
+    }
+
+    if (!overview) return "";
+    const explanation = positionExplanation(rawValue);
+    return explanation ? `${overview} ${explanation}` : overview;
+  }
+
+  function buildPositionSummaries(candidate) {
+    const values = Array.isArray(candidate.positionValues) ? candidate.positionValues : [];
+    return POSITION_DEFINITIONS.map((definition, index) => ({
+      topic: definition.topic,
+      summary: positionLanguage(values[index], definition)
+    })).filter(position => position.summary);
+  }
+
+  function hasPositionResearch(candidate) {
+    return buildPositionSummaries(candidate).length > 0;
+  }
+
   function liCandidate(c) {
     const candidateMeta = [c.position, c.district].filter(Boolean).map(escapeHtml).join(" · ");
+    const websiteUrl = usableWebsite(c.website);
 
     const trumpBadge = isTrumpAligned(c.aligned)
-      ? `<span class="candidate-badge trump" title="Trump-aligned">TRUMP</span>`
+      ? `<span class="candidate-badge trump" title="Trump-backed">TRUMP-BACKED</span>`
       : "";
 
     const impeachBadge = isImpeachFlag(c.impeach)
-      ? `<span class="candidate-badge impeach" title="Willing to hold Trump accountable">IMPEACH</span>`
+      ? `<span class="candidate-badge impeach" title="Pro-impeachment">PRO-IMPEACH</span>`
       : "";
 
-    const site = c.website
-      ? `<a class="candidate-site" href="${escapeHtml(c.website)}" target="_blank" rel="noopener">Website <span aria-hidden="true">↗</span></a>`
+    const site = websiteUrl
+      ? `<a class="candidate-site" href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener">Website <span aria-hidden="true">↗</span></a>`
       : "";
 
-    const positions = c.key
+    const positions = c.key && hasPositionResearch(c)
       ? `<button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${hasOwlAccess()}">
-          <span class="position-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
-          <span>11 Positions</span>
+          <span class="position-button-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
+          <span>Positions</span>
         </button>`
       : "";
 
@@ -394,18 +592,19 @@ let birthStateMap = {};
   function candidateBadges(candidate) {
     return [
       isTrumpAligned(candidate.aligned)
-        ? '<span class="candidate-badge trump" title="Trump-aligned">TRUMP</span>'
+        ? '<span class="candidate-badge trump" title="Trump-backed">TRUMP-BACKED</span>'
         : '',
       isImpeachFlag(candidate.impeach)
-        ? '<span class="candidate-badge impeach" title="Willing to hold Trump accountable">IMPEACH</span>'
+        ? '<span class="candidate-badge impeach" title="Pro-impeachment">PRO-IMPEACH</span>'
         : ''
     ].join('');
   }
 
   function renderCandidateCard(candidate) {
     const location = [candidate.stateFullName, candidate.district].filter(Boolean).join(' • ');
-    const website = candidate.website
-      ? `<a class="candidate-site-link" href="${escapeHtml(candidate.website)}" target="_blank" rel="noopener noreferrer">Website <span aria-hidden="true">↗</span></a>`
+    const websiteUrl = usableWebsite(candidate.website);
+    const website = websiteUrl
+      ? `<a class="candidate-site-link" href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener noreferrer">Website <span aria-hidden="true">↗</span></a>`
       : '<span class="candidate-site-unavailable">Website not listed</span>';
 
     return `
@@ -415,10 +614,10 @@ let birthStateMap = {};
         <div>${candidateBadges(candidate)}</div>
         <div class="candidate-card-actions">
           ${website}
-          <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">
-            <span class="position-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
-            <span>11 Positions</span>
-          </button>
+          ${hasPositionResearch(candidate) ? `<button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">
+            <span class="position-button-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
+            <span>Positions</span>
+          </button>` : ""}
         </div>
       </article>`;
   }
@@ -492,25 +691,33 @@ let birthStateMap = {};
     const candidate = candidateByKey.get(candidateKey);
     if (!candidate) return;
 
+    const positions = buildPositionSummaries(candidate);
+    if (!positions.length) return;
+
     if (!hasOwlAccess()) {
       pendingCandidateKey = candidateKey;
       if (window.StrategicOwlAccess) window.StrategicOwlAccess.open();
       return;
     }
 
+    const heading = document.getElementById('owl-positions-title');
     const title = document.getElementById('owl-positions-candidate');
     const grid = document.getElementById('owl-topic-grid');
+    const candidateName = String(candidate.name || '')
+      .replace(/^\([^)]+\)\s*/, '')
+      .trim();
+    if (heading) heading.textContent = `${candidateName} on the Issues`;
     if (title) {
-      title.textContent = [candidate.name, candidate.position, candidate.stateFullName, candidate.district]
+      title.textContent = [candidate.position, candidate.stateFullName, candidate.district]
         .filter(Boolean)
         .join(' • ');
     }
     if (grid) {
-      grid.innerHTML = OWL_POSITION_TOPICS.map(topic => `
-        <div class="owl-topic-card">
-          <strong>${escapeHtml(topic)}</strong>
-          <span>Position information is not available yet.</span>
-        </div>`).join('');
+      grid.innerHTML = positions.map(position => `
+        <section class="owl-topic-row">
+          <h3>${escapeHtml(position.topic)}</h3>
+          <p>${escapeHtml(position.summary)}</p>
+        </section>`).join('');
     }
     openOwlModal('owl-positions-modal');
   }
@@ -542,6 +749,8 @@ let birthStateMap = {};
 
     const roster = stateRosterMap[full] || [];
     const meta   = stateMetaMap[full] || {};
+    const registrationUrl = usableWebsite(meta.url);
+    const houseUrl = `https://ziplook.house.gov/htbin/findrep_house?ZIP=${encodeURIComponent(zip)}`;
     const primaryText = meta.date
   ? `Primary: <span class="primary-date">${formatDate(meta.date)}</span>`
   : "";
@@ -578,38 +787,16 @@ const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
         ${renderList("U.S. House Race", house, (c)=> liCandidate(c))}
         ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
         ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
-        ${meta.url ? `<div class="ballot-register-row"><a class="ballot-register-link" href="${escapeHtml(meta.url)}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)} <span aria-hidden="true">↗</span></a></div>` : ""}
+        <div class="ballot-register-row">
+          ${registrationUrl ? `<a class="ballot-register-link" href="${escapeHtml(registrationUrl)}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)}</a>` : ""}
+          <a class="ballot-secondary-link" href="${houseUrl}" target="_blank" rel="noopener">Confirm My District on House.gov</a>
+        </div>
       </article>
     `;
   }
 
   // --- INIT (kept your calls; added our fetch + listeners) ---
 document.addEventListener("DOMContentLoaded", () => {
-  // Ensure hamburger has ARIA attributes and event binding
-  const menuBtn = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  if (menuBtn) {
-    if (!menuBtn.hasAttribute("aria-controls")) menuBtn.setAttribute("aria-controls", "mobileMenu");
-    menuBtn.setAttribute("aria-expanded", "false");
-    // Bind click as a backup in case inline onclick is removed by CSP
-    menuBtn.addEventListener("click", toggleMenu);
-  }
-  if (mobileMenu) {
-    // Close menu after selecting a link
-    mobileMenu.querySelectorAll("a").forEach(a => {
-      a.addEventListener("click", () => {
-        mobileMenu.classList.remove("show");
-        if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
-  // On resize to desktop, ensure menu is reset
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 768 && mobileMenu) {
-      mobileMenu.classList.remove("show");
-      if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
-    }
-  });
   // Yours:
   fetchStateLinks();
   const stateSel = document.getElementById("state-select");
@@ -623,7 +810,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const zipBtn = document.getElementById("zip-go");
   const zipInput = document.getElementById("zip-input");
-  const zipValidateBtn = document.getElementById("zip-validate"); // <-- new
 
   if (zipBtn) zipBtn.addEventListener("click", handleZipLookup);
   if (zipInput) {
@@ -631,11 +817,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Enter") handleZipLookup();
     });
   }
-  if (zipValidateBtn) {
-    // openHouseLookupFromZip() must be defined (see previous snippet)
-    zipValidateBtn.addEventListener("click", openHouseLookupFromZip);
-  }
-
   const candidateSearchButton = document.getElementById('candidate-name-go');
   const candidateSearchInput = document.getElementById('candidate-name-input');
   if (candidateSearchButton) candidateSearchButton.addEventListener('click', handleCandidateSearch);
@@ -643,68 +824,6 @@ document.addEventListener("DOMContentLoaded", () => {
     candidateSearchInput.addEventListener('keydown', event => {
       if (event.key === 'Enter') handleCandidateSearch();
     });
-  }
-
-  const accessOpenButton = document.getElementById('owl-access-open');
-  if (accessOpenButton) {
-    accessOpenButton.addEventListener('click', () => openOwlModal('owl-access-modal'));
-  }
-
-  const emailCheckButton = document.getElementById('owl-check-email');
-  if (emailCheckButton) {
-    emailCheckButton.addEventListener('click', async () => {
-      const input = document.getElementById('owl-access-email');
-      const message = document.getElementById('owl-access-message');
-      const email = input ? input.value.trim().toLowerCase() : '';
-      if (!message) return;
-
-      if (!email || !email.includes('@') || !email.includes('.')) {
-        message.textContent = 'Enter the email used for your Stripe or paid Substack subscription.';
-        return;
-      }
-
-      if (!window.StrategicOwlAccess) {
-        message.textContent = 'Owl Access could not load. Please refresh and try again.';
-        return;
-      }
-
-      emailCheckButton.disabled = true;
-      message.textContent = 'Checking Owl Access...';
-      if (accessOpenButton) accessOpenButton.dataset.access = 'loading';
-
-      try {
-        const result = await window.StrategicOwlAccess.validateEmail(email);
-
-        if (result.valid === true) {
-          message.textContent = result.message || 'Owl Access confirmed.';
-          updateOwlAccessState();
-
-          if (!pendingCandidateKey) {
-            window.setTimeout(() => {
-              closeOwlModal(document.getElementById('owl-access-modal'));
-            }, 650);
-          }
-        } else {
-          message.textContent = result.message || result.error ||
-            'No active paid subscription was found for that email.';
-        }
-      } catch (error) {
-        console.error('Owl Access validation failed:', error);
-        message.textContent = 'Owl Access could not be checked. Please try again.';
-      } finally {
-        emailCheckButton.disabled = false;
-        if (!hasOwlAccess() && accessOpenButton) {
-          accessOpenButton.dataset.access = 'locked';
-        }
-      }
-    });
-
-    const emailInput = document.getElementById('owl-access-email');
-    if (emailInput) {
-      emailInput.addEventListener('keydown', event => {
-        if (event.key === 'Enter') emailCheckButton.click();
-      });
-    }
   }
 
   document.addEventListener('click', event => {
@@ -736,48 +855,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.detail && event.detail.active && pendingCandidateKey) {
       const candidateKey = pendingCandidateKey;
       pendingCandidateKey = null;
-      closeOwlModal(document.getElementById('owl-access-modal'));
       openCandidatePositions(candidateKey);
     }
   });
 
   updateOwlAccessState();
 });
-  // --- ZIP → House lookup helpers ---
-function buildZipForHouse(raw) {
-  let z = String(raw || "").trim();
-  // keep digits and optional dash
-  z = z.replace(/[^\d-]/g, "");
-  // if 9 straight digits, convert to ZIP+4 with dash
-  if (/^\d{9}$/.test(z)) z = z.slice(0,5) + "-" + z.slice(5);
-  // must be 5-digit or 5+4
-  if (!/^\d{5}(-\d{4})?$/.test(z)) return null;
-  return z;
-}
-
-function openHouseLookupFromZip() {
-  const input = document.getElementById("zip-input");
-  const raw = input ? input.value : "";
-  const z = buildZipForHouse(raw);
-  if (!z) {
-    alert("Please enter a valid 5-digit ZIP or ZIP+4 (e.g., 02115 or 02115-1234).");
-    return;
-  }
-  const url = "https://ziplook.house.gov/htbin/findrep_house?ZIP=" + encodeURIComponent(z);
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-  // Auto-close mobile menu when clicking/tapping outside
-  document.addEventListener('click', function (event) {
-    const menu = document.getElementById('mobileMenu');
-    const toggle = document.getElementById('menuToggle');
-    if (!menu || !toggle) return;
-
-    const isClickInsideMenu = menu.contains(event.target);
-    const isClickOnToggle = toggle.contains(event.target);
-
-    // If menu is shown and user clicks outside both the menu and the toggle button, close it
-    if (menu.classList.contains('show') && !isClickInsideMenu && !isClickOnToggle) {
-      menu.classList.remove('show');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-  });
