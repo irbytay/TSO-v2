@@ -24,7 +24,7 @@
 .support-mark {
   width: 46px;
   height: 46px !important;
-  border-radius: 50%;
+  border-radius: 0;
   object-fit: cover;
 }
 
