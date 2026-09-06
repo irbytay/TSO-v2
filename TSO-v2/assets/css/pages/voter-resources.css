@@ -1,7 +1,7 @@
 .site-page--voter-resources {
   --voter-gold: #d4af37;
-  --voter-green: #28a745;
-  --voter-blue: #3b6ced;
+  --voter-green: #2ed35f;
+  --voter-blue: #437cff;
   --voter-copy: #dddddd;
   --voter-muted: #a7b3c1;
   --voter-panel: rgba(17, 34, 64, 0.78);
@@ -39,11 +39,13 @@
 .site-page--voter-resources .voter-heading h1 {
   margin: 0;
   color: var(--voter-gold);
-  font-size: clamp(2rem, 5vw, 2.65rem) !important;
+  font-family: "Owl Times", "Times New Roman", serif !important;
+  font-size: clamp(2.15rem, 5vw, 2.8rem) !important;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.01em;
   line-height: 1.1;
-  text-transform: uppercase;
+  text-shadow: 0 2px 14px rgba(212, 175, 55, 0.2);
+  text-transform: none;
 }
 
 .voter-tru {
@@ -65,14 +67,17 @@
 
 .voter-tru-bars .truth {
   background: var(--voter-green);
+  box-shadow: 0 0 11px rgba(46, 211, 95, 0.55);
 }
 
 .voter-tru-bars .reliability {
   background: var(--voter-blue);
+  box-shadow: 0 0 11px rgba(67, 124, 255, 0.55);
 }
 
 .voter-tru-bars .understanding {
   background: var(--voter-gold);
+  box-shadow: 0 0 11px rgba(212, 175, 55, 0.5);
 }
 
 .voter-tru-labels {

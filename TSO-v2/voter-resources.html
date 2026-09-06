@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Voter Dashboard | The Strategic Owl</title>
+  <title>Voter Resources | The Strategic Owl</title>
   <meta name="description" content="Find voter information, candidates, districts, and researched candidate positions." />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/owl-mark.png" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20260906-2" />
-  <link rel="stylesheet" href="assets/css/pages/voter-resources.css?v=20260906-4" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20260906-3" />
+  <link rel="stylesheet" href="assets/css/pages/voter-resources.css?v=20260906-5" />
   <script src="assets/js/site-shell.js" defer></script>
   <script src="assets/js/owl-access.js" defer></script>
 </head>
@@ -20,7 +20,7 @@
   <main id="main-content" class="site-page site-page--voter-resources" tabindex="-1">
     <div class="voter-dashboard">
       <header class="voter-heading">
-        <h1>Voter Dashboard</h1>
+        <h1>Voter Resources</h1>
         <div class="voter-tru" aria-label="Truth, Reliability, Understanding">
           <div class="voter-tru-bars" aria-hidden="true">
             <span class="truth"></span>
@@ -47,6 +47,17 @@
         </div>
         <div id="zip-output" class="zip-output" style="display:none"></div>
         <p class="voter-data-note">Candidate information can change. Confirm your district through House.gov and your ballot through your state or local election office.</p>
+      </section>
+
+      <section class="voter-section candidate-search" aria-labelledby="candidate-search-title">
+        <h2 id="candidate-search-title">Find a Candidate</h2>
+        <p class="voter-section-copy">Search by full or partial name. Basic candidate information is available to everyone.</p>
+        <div class="candidate-search-row">
+          <input id="candidate-name-input" type="search" autocomplete="off" placeholder="Candidate name" aria-describedby="candidate-search-status" />
+          <button id="candidate-name-go" class="voter-primary-button" type="button">Search</button>
+        </div>
+        <p class="candidate-search-status" id="candidate-search-status" role="status"></p>
+        <div class="candidate-results" id="candidate-name-results"></div>
       </section>
 
       <section class="voter-section register-section" aria-labelledby="register-title">
@@ -81,16 +92,6 @@
         </div>
       </section>
 
-      <section class="voter-section candidate-search" aria-labelledby="candidate-search-title">
-        <h2 id="candidate-search-title">Find a Candidate</h2>
-        <p class="voter-section-copy">Search by full or partial name. Basic candidate information is available to everyone.</p>
-        <div class="candidate-search-row">
-          <input id="candidate-name-input" type="search" autocomplete="off" placeholder="Candidate name" aria-describedby="candidate-search-status" />
-          <button id="candidate-name-go" class="voter-primary-button" type="button">Search</button>
-        </div>
-        <p class="candidate-search-status" id="candidate-search-status" role="status"></p>
-        <div class="candidate-results" id="candidate-name-results"></div>
-      </section>
     </div>
 
     <div class="owl-modal" id="owl-positions-modal" role="dialog" aria-modal="true" aria-labelledby="owl-positions-title" hidden>

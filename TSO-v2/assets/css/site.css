@@ -37,8 +37,8 @@
   --owl-dim: #7c8a9b;
   --owl-success: #77c593;
   --owl-danger: #ff8a8a;
-  --owl-truth: #28a745;
-  --owl-reliability: #3b6ced;
+  --owl-truth: #2ed35f;
+  --owl-reliability: #437cff;
   --owl-understanding: #d4af37;
   --owl-header-height: 72px;
   --owl-content-width: 1180px;
@@ -192,14 +192,17 @@ body.site-body .divider-bar > div {
 
 body.site-body .divider-bar > .truth {
   background: var(--owl-truth);
+  box-shadow: 0 0 11px rgba(46, 211, 95, 0.55);
 }
 
 body.site-body .divider-bar > .reliability {
   background: var(--owl-reliability);
+  box-shadow: 0 0 11px rgba(67, 124, 255, 0.55);
 }
 
 body.site-body .divider-bar > .understanding {
   background: var(--owl-understanding);
+  box-shadow: 0 0 11px rgba(212, 175, 55, 0.5);
 }
 
 body.site-body .divider-labels {

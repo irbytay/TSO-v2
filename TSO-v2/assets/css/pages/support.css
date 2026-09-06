@@ -49,19 +49,21 @@
 .support-tru-bars span {
   height: 6px;
   border-radius: 999px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
 .support-tru-truth {
-  background: #28a745;
+  background: #2ed35f;
+  box-shadow: 0 0 11px rgba(46, 211, 95, 0.55);
 }
 
 .support-tru-reliability {
-  background: #3b6ced;
+  background: #437cff;
+  box-shadow: 0 0 11px rgba(67, 124, 255, 0.55);
 }
 
 .support-tru-understanding {
   background: var(--support-gold);
+  box-shadow: 0 0 11px rgba(212, 175, 55, 0.5);
 }
 
 .support-tru-labels {
