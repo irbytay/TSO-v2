@@ -33,7 +33,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
             </button>
             <a class="owl-brand" href="index.html" aria-label="The Strategic Owl home">
-              <img src="assets/images/owl-mark.png" alt="" />
+              <img src="assets/images/3X.png" alt="" />
               <span>The Strategic Owl</span>
             </a>
             <nav class="owl-primary-nav" id="owl-primary-nav" aria-label="Primary navigation" data-open="false">
