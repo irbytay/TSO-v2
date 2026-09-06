@@ -1,10 +1,7 @@
-/* Behavior migrated from feed.html. */
-// 🦉 The Perch feed: Daily Owl Logic + The Owl's Position
-  // Mirrors the Flutter feed.dart logic: Owl_Logic!B2:D21, read in row pairs.
-
-  const PERCH_SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const PERCH_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const PERCH_RANGE = "Owl_Logic!B2:E21";
+/* The Perch feed: the same public Supabase source used by Flutter feed.dart. */
+  const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
 
   function soToast(msg) {
     const el = document.getElementById('so-toast');
@@ -24,76 +21,93 @@
       .replace(/'/g, '&#039;');
   }
 
-  function parsePerchDateTime(dateText, timeText) {
-    const rawDate = String(dateText || '').trim();
-    const rawTime = String(timeText || '').replace(/\bET\b/gi, '').trim();
+  function formatFeedTimestamp(rawTimestamp) {
+    const date = new Date(String(rawTimestamp || ''));
+    if (Number.isNaN(date.getTime())) return 'Recently';
 
-    const dateParts = rawDate.split('/').map((part) => parseInt(part, 10));
-    if (dateParts.length !== 3 || dateParts.some(Number.isNaN)) return new Date(0);
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York',
+      month: 'numeric',
+      day: 'numeric',
+      year: '2-digit',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    }).formatToParts(date);
+    const part = (type) => parts.find((item) => item.type === type)?.value || '';
 
-    let [month, day, year] = dateParts;
-    let hour = 0;
-    let minute = 0;
-
-    const timeMatch = rawTime.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
-    if (timeMatch) {
-      hour = parseInt(timeMatch[1], 10);
-      minute = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
-      const meridiem = (timeMatch[3] || '').toUpperCase();
-      if (meridiem === 'PM' && hour !== 12) hour += 12;
-      if (meridiem === 'AM' && hour === 12) hour = 0;
-    }
-
-    return new Date(year, month - 1, day, hour, minute, 0, 0);
+    return `${part('month')}/${part('day')}/${part('year')} • ${part('hour')}:${part('minute')} ${part('dayPeriod')} ET`;
   }
 
-  function formatPerchTimestamp(dateText, timeText) {
-    const date = String(dateText || '').trim();
-    const time = String(timeText || '').trim();
-    if (date && time) return `${date} • ${time}`;
-    return date || time || '';
+  function parseFeedImageUrl(rawValue) {
+    const value = String(rawValue || '').trim();
+    if (!value || value.toLowerCase() === 'null') return '';
+
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' || url.protocol === 'http:' ? value : '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function resolvePostSubject(rawSubject, dailyOwlLogic) {
+    const subject = String(rawSubject || '').trim();
+    if (subject && subject.toLowerCase() !== 'null') return subject;
+
+    const fallback = String(dailyOwlLogic || '').replace(/\s+/g, ' ').trim();
+    return fallback || 'Owl Logic';
   }
 
   async function fetchPerchFeed() {
-    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${PERCH_SHEET_ID}/values/${encodeURIComponent(PERCH_RANGE)}`);
-    url.searchParams.set('key', PERCH_API_KEY);
+    const url = new URL(`${SUPABASE_URL}/rest/v1/owl_posts`);
+    url.searchParams.set(
+      'select',
+      'id,subject,daily_owl_logic,strategic_positioning,image_url,post_time',
+    );
+    url.searchParams.set('order', 'post_time.desc');
 
-    const res = await fetch(url.toString());
-    if (!res.ok) throw new Error(`Sheets fetch failed: ${res.status}`);
+    const response = await fetch(url.toString(), {
+      headers: {
+        Accept: 'application/json',
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+      },
+    });
 
-    const json = await res.json();
-    const rows = json.values || [];
-    const posts = [];
-
-    for (let i = 0; i < rows.length; i += 2) {
-      const dailyRow = rows[i] || [];
-      const strategicRow = rows[i + 1] || [];
-
-      const dailyOwlLogic = String(dailyRow[0] || '').trim();
-const strategicPositioning = String(strategicRow[0] || '').trim();
-
-const date = String(dailyRow[2] || '').trim();
-const time = String(strategicRow[2] || '').trim();
-
-// Column E = optional image attached to this post
-const imageUrl = String(dailyRow[3] || '').trim();
-
-      if (!dailyOwlLogic || !strategicPositioning) continue;
-
-      posts.push({
-  id: `perch-${i}`,
-  dailyOwlLogic,
-  strategicPositioning,
-  imageUrl,
-  date,
-  time,
-  timestamp: formatPerchTimestamp(date, time),
-  sortDate: parsePerchDateTime(date, time),
-});
+    if (!response.ok) {
+      throw new Error(`Supabase feed request failed: ${response.status}`);
     }
 
-    posts.sort((a, b) => b.sortDate - a.sortDate);
-    return posts;
+    const rows = await response.json();
+    if (!Array.isArray(rows)) return [];
+
+    return rows.map((row, index) => {
+      const dailyOwlLogic = String(row.daily_owl_logic || '').trim();
+      const strategicPositioning = String(row.strategic_positioning || '').trim();
+
+      return {
+        id: String(row.id || `owl-post-${index}`),
+        subject: resolvePostSubject(row.subject, dailyOwlLogic),
+        dailyOwlLogic,
+        strategicPositioning,
+        imageUrl: parseFeedImageUrl(row.image_url),
+        timestamp: formatFeedTimestamp(row.post_time),
+      };
+    }).filter((post) => post.dailyOwlLogic || post.strategicPositioning);
+  }
+
+  function buildFullPostText(post) {
+    return [
+      post.subject,
+      'Owl Logic',
+      post.dailyOwlLogic,
+      'The Owl’s Position',
+      post.strategicPositioning,
+      post.timestamp === 'Recently'
+        ? 'Taylor Irby • The Strategic Owl'
+        : `Taylor Irby • The Strategic Owl\n${post.timestamp}`,
+    ].filter((value) => String(value || '').trim()).join('\n\n');
   }
 
   async function copyText(text, label) {
@@ -134,8 +148,6 @@ const imageUrl = String(dailyRow[3] || '').trim();
   }
 
   function renderPerchPost(post) {
-    const fullPost = `${post.dailyOwlLogic}\n\n${post.strategicPositioning}`;
-
     return `
       <article class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
         <div class="so-card-title-row">
@@ -148,7 +160,8 @@ const imageUrl = String(dailyRow[3] || '').trim();
               </p>
               <img class="feed-card-brand-mark" src="assets/images/brand-title.png" alt="The Strategic Owl" />
             </div>
-            <h2 class="so-card-title">Daily Owl Logic</h2>
+            <h2 class="so-post-subject">${escapeHtml(post.subject)}</h2>
+            <h3 class="so-card-title">Owl Logic</h3>
           </div>
           <div class="so-actions">
             <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
@@ -164,7 +177,7 @@ const imageUrl = String(dailyRow[3] || '').trim();
         <div class="so-feed-section-spacer" aria-hidden="true"></div>
 
         <div class="so-card-title-row">
-          <h2 class="so-card-title">The Owl’s Position</h2>
+          <h3 class="so-card-title">The Owl’s Position</h3>
           <div class="so-actions">
             <button class="so-icon-btn" data-copy="position" title="Copy The Owl’s Position" aria-label="Copy The Owl’s Position">
               <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
@@ -202,7 +215,7 @@ const imageUrl = String(dailyRow[3] || '').trim();
       const post = posts.find((item) => item.id === card.dataset.postId);
       if (!post) return;
 
-      const fullPost = `${post.dailyOwlLogic}\n\n${post.strategicPositioning}`;
+      const fullPost = buildFullPostText(post);
 
       card.querySelector('[data-copy="daily"]')?.addEventListener('click', () => copyText(post.dailyOwlLogic, 'Owl Logic'));
       card.querySelector('[data-share="daily"]')?.addEventListener('click', () => shareText(post.dailyOwlLogic, 'Daily Owl Logic'));
