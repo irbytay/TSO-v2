@@ -28,7 +28,7 @@
   
 
   <link rel="icon" type="image/png" href="assets/images/owl-mark.png" />
-  <link rel="stylesheet" href="assets/css/pages/owl-feed.css?v=20260906-2" />
+  <link rel="stylesheet" href="assets/css/pages/owl-feed.css?v=20260906-3" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260906-4" />
   <script src="assets/js/site-shell.js?v=20260906-2" defer></script>
   <script src="assets/js/owl-access.js" defer></script>
@@ -37,10 +37,13 @@
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="site-header"></div>
   <main id="main-content" class="site-page site-page--owl-feed" tabindex="-1">
-<div class="container">
-    <h1>The Strategic Owl</h1>
-<!-- 🎯 Divider -->
-    <section class="divider-section">
+  <div class="container">
+    <header class="perch-page-heading">
+      <img class="perch-page-mark" src="assets/images/owl-mark.png" alt="" />
+      <h1 id="perch-feed-title">The Perch</h1>
+    </header>
+
+    <section class="divider-section" aria-label="Truth, Reliability, Understanding">
       <div class="divider-bar">
         <div class="truth"></div>
         <div class="reliability"></div>
@@ -52,17 +55,14 @@
         <span>Understanding</span>
       </div>
     </section>
-   <!-- 📱 App Promo Section -->
-
     <!-- The Perch Feed (Supabase owl_posts) -->
     <section id="perch-feed-section" aria-labelledby="perch-feed-title">
-      <h2 id="perch-feed-title">The Perch</h2>
-      <p style="text-align: center; max-width: 720px; margin-bottom: 14px;">
+      <p class="perch-page-intro">
         Owl Logic and The Owl’s Position, updated from the Strategic Owl feed.
       </p>
 
-      <div style="text-align: center; margin-bottom: 18px;">
-        <button class="so-icon-btn" id="refresh-feed" title="Refresh feed" aria-label="Refresh feed" style="width: auto; padding: 0 14px; color: var(--understanding); font-weight: 700; font-family: 'Inter', sans-serif;">
+      <div class="perch-refresh-row">
+        <button class="perch-refresh-button" id="refresh-feed" title="Refresh feed" aria-label="Refresh feed">
           Refresh Feed
         </button>
       </div>
@@ -114,21 +114,7 @@
   </div>
 </div>
   
-<div class="so-card" id="homepage-story-card" style="display:none;"></div>
-     <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-  </div>
+    <div class="so-card" id="homepage-story-card" style="display:none;"></div>
   </div>
   <!-- 📜 Footer -->
   
@@ -204,6 +190,6 @@
 </script>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/js/pages/owl-feed.js" defer></script>
+  <script src="assets/js/pages/owl-feed.js?v=20260906-2" defer></script>
 </body>
 </html>

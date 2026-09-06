@@ -149,64 +149,81 @@
 
   function renderPerchPost(post) {
     return `
-      <article class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
-        <div class="so-card-title-row">
-          <div class="so-card-heading-block">
-            <div class="so-author-row">
-              <img src="assets/images/founder-portrait.png" alt="Taylor Irby" class="so-author-avatar" onerror="this.style.display='none';" />
-              <p class="so-author-meta">
-                <span class="so-author-name">Taylor Irby</span>
-                ${post.timestamp ? `<span class="so-author-time">${escapeHtml(post.timestamp)}</span>` : ''}
-              </p>
-              <img class="feed-card-brand-mark" src="assets/images/brand-title.png" alt="The Strategic Owl" />
-            </div>
+      <details class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
+        <summary class="perch-post-summary">
+          <div class="so-author-row">
+            <img src="assets/images/founder-portrait.png" alt="Taylor Irby" class="so-author-avatar" onerror="this.style.display='none';" />
+            <p class="so-author-meta">
+              <span class="so-author-name">Taylor Irby</span>
+              ${post.timestamp ? `<span class="so-author-time">${escapeHtml(post.timestamp)}</span>` : ''}
+            </p>
+            <img class="feed-card-brand-mark" src="assets/images/brand-title.png" alt="The Strategic Owl" />
+          </div>
+          <div class="perch-summary-main">
+            ${post.imageUrl ? `
+              <img
+                src="${escapeHtml(post.imageUrl)}"
+                alt=""
+                class="perch-summary-image"
+                loading="lazy"
+                decoding="async"
+              />
+            ` : ''}
             <h2 class="so-post-subject">${escapeHtml(post.subject)}</h2>
+            <span class="perch-summary-chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </div>
+        </summary>
+
+        <div class="perch-post-details">
+          <div class="so-card-title-row">
             <h3 class="so-card-title">Owl Logic</h3>
+            <div class="so-actions">
+              <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
+                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+              </button>
+              <button class="so-icon-btn" data-share="daily" title="Share Owl Logic" aria-label="Share Owl Logic">
+                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+              </button>
+            </div>
           </div>
-          <div class="so-actions">
-            <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
-              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
-            </button>
-            <button class="so-icon-btn" data-share="daily" title="Share Owl Logic" aria-label="Share Owl Logic">
-              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+          <div class="so-card-body">${escapeHtml(post.dailyOwlLogic)}</div>
+
+          <div class="so-feed-section-spacer" aria-hidden="true"></div>
+
+          <div class="so-card-title-row">
+            <h3 class="so-card-title">The Owl’s Position</h3>
+            <div class="so-actions">
+              <button class="so-icon-btn" data-copy="position" title="Copy The Owl’s Position" aria-label="Copy The Owl’s Position">
+                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+              </button>
+              <button class="so-icon-btn" data-share="position" title="Share The Owl’s Position" aria-label="Share The Owl’s Position">
+                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="so-card-body italic">${escapeHtml(post.strategicPositioning)}</div>
+
+          ${post.imageUrl ? `
+            <div class="so-post-media">
+              <img
+                src="${escapeHtml(post.imageUrl)}"
+                alt="Strategic Owl editorial artwork"
+                class="so-post-image"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ` : ''}
+
+          <div class="perch-full-post-action">
+            <button class="perch-copy-full" data-copy="full" title="Copy full post" aria-label="Copy full post">
+              Copy Full Post
             </button>
           </div>
         </div>
-        <div class="so-card-body">${escapeHtml(post.dailyOwlLogic)}</div>
-
-        <div class="so-feed-section-spacer" aria-hidden="true"></div>
-
-        <div class="so-card-title-row">
-          <h3 class="so-card-title">The Owl’s Position</h3>
-          <div class="so-actions">
-            <button class="so-icon-btn" data-copy="position" title="Copy The Owl’s Position" aria-label="Copy The Owl’s Position">
-              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
-            </button>
-            <button class="so-icon-btn" data-share="position" title="Share The Owl’s Position" aria-label="Share The Owl’s Position">
-              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="so-card-body italic">${escapeHtml(post.strategicPositioning)}</div>
-
-        ${post.imageUrl ? `
-          <div class="so-post-media">
-            <img
-              src="${escapeHtml(post.imageUrl)}"
-              alt="Strategic Owl editorial artwork"
-              class="so-post-image"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        ` : ''}
-
-        <div style="margin-top:16px; text-align:center;">
-          <button class="so-icon-btn" data-copy="full" title="Copy full post" aria-label="Copy full post" style="width:auto; padding:0 14px; color:var(--understanding); font-weight:700; font-family:'Inter', sans-serif;">
-            Copy Full Post
-          </button>
-        </div>
-      </article>
+      </details>
     `;
   }
 
