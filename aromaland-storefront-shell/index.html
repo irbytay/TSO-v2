@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#315b4a" />
+  <title>Aromaland — Mobile Storefront Concept</title>
+  <meta name="description" content="A mobile-first Aromaland storefront concept using sample product data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="demo-bar">Concept preview · sample products · checkout disabled</div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Aromaland concept home">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span>AROMALAND<small>nature, bottled</small></span>
+    </a>
+    <button class="icon-button" id="cartButton" aria-label="Open demo bag">Bag <span id="bagCount">0</span></button>
+  </header>
+
+  <main id="app">
+    <section class="hero" id="home">
+      <div class="eyebrow">Find a scent for your moment</div>
+      <h1>Let nature set the mood.</h1>
+      <p>Explore aromatic essentials by purpose, scent family, or product type—without the guesswork.</p>
+      <button class="primary" data-action="start-quiz">Find your scent <span>→</span></button>
+      <button class="text-link" data-scroll="shop">Or browse the collection</button>
+      <div class="hero-art" aria-hidden="true">
+        <div class="sun"></div><div class="bottle"><span>A</span></div><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i>
+      </div>
+    </section>
+
+    <section class="browse" id="shop">
+      <div class="section-heading"><span class="eyebrow">A simpler way to explore</span><h2>Shop your way</h2></div>
+      <div class="shop-paths">
+        <button class="path-card" data-filter-type="purpose"><span>01</span><strong>By purpose</strong><small>Home, body, ritual & more</small><b>Explore →</b></button>
+        <button class="path-card lavender" data-filter-type="scent"><span>02</span><strong>By scent</strong><small>Floral, citrus, earthy & more</small><b>Explore →</b></button>
+        <button class="path-card clay" data-filter-type="type"><span>03</span><strong>By product</strong><small>Oils, mists, bath & body</small><b>Explore →</b></button>
+      </div>
+    </section>
+
+    <section class="featured">
+      <div class="section-heading row"><div><span class="eyebrow">Sample catalog</span><h2>Small rituals, beautifully made</h2></div><button class="text-link" data-filter-type="all">View all</button></div>
+      <div class="chip-row" id="chips" aria-label="Product filters"></div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <section class="trust">
+      <span>Since 1986</span><h2>Rooted in aromatic craft.</h2>
+      <p>This concept favors clear scent descriptions and everyday-use guidance. It does not promise to diagnose, treat, cure, or prevent any condition.</p>
+      <div><b>Clearly described</b><b>Easy to explore</b><b>Thoughtfully sourced</b></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Primary navigation">
+    <a href="#home" class="active"><span>⌂</span>Home</a>
+    <a href="#shop"><span>⌕</span>Shop</a>
+    <button data-action="start-quiz"><span>✿</span>Find a scent</button>
+    <button id="bagNav"><span>□</span>Bag</button>
+  </nav>
+
+  <div class="sheet-backdrop" id="backdrop" hidden></div>
+  <aside class="sheet" id="quizSheet" aria-hidden="true" aria-label="Find your scent">
+    <div class="sheet-handle"></div><button class="close" data-close aria-label="Close">×</button>
+    <div id="quizContent"></div>
+  </aside>
+  <aside class="sheet" id="productSheet" aria-hidden="true" aria-label="Product details"><div class="sheet-handle"></div><button class="close" data-close aria-label="Close">×</button><div id="productContent"></div></aside>
+  <aside class="sheet" id="cartSheet" aria-hidden="true" aria-label="Demo bag"><div class="sheet-handle"></div><button class="close" data-close aria-label="Close">×</button><div id="cartContent"></div></aside>
+
+  <script src="app.js"></script>
+</body>
+</html>
