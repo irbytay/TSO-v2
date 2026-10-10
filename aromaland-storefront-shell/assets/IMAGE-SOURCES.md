@@ -7,3 +7,4 @@ These images were copied from Aromaland's public BigCommerce CDN for the private
 - `lavender-hand-soap.png` — https://cdn11.bigcommerce.com/s-5iusyn8n0b/images/stencil/338x338/products/228/3018/Hand_Soap_Lavender_2__56621.1738021066.png
 - `aromafree-shampoo.png` — https://cdn11.bigcommerce.com/s-5iusyn8n0b/images/stencil/338x338/products/465/3045/Shampoo_Unscented_AromaFree__28619.1738021061.png
 - `jasmine-clementine-gel.jpg` — https://cdn11.bigcommerce.com/s-5iusyn8n0b/images/stencil/338x338/products/753/3044/Jasmine_and_Clementine_Bath_and_Shower_Gel__34839.1738021060.jpg
+- `aromaland-logo.webp` — https://cdn11.bigcommerce.com/s-5iusyn8n0b/images/stencil/150x147/aromaland_teal_3d_1736364808__14295.original.png
