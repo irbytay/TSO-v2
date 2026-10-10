@@ -37,6 +37,8 @@ Serve this folder with any static web server and open `index.html`. The shell ha
 
 For deployment, copy this folder's contents to the root of the confirmed repository. A separate Cloudflare preview project can publish that repository with no build command and `/` as the output directory. `_headers` prevents indexing and disables unnecessary browser capabilities. Access protection, if desired, should be configured at Cloudflare rather than added to the storefront code.
 
+The shell now includes a complete concept-menu translation of the public Aromaland catalog: Essential Oils, Massage, Bath & Body, Hair Care, and Home Fragrance, with every current subcategory represented. Selected official imagery is stored locally under `assets/images`; provenance and pre-production approval notes are recorded in `assets/IMAGE-SOURCES.md`.
+
 ## Decisions needed before phase 3
 
 - Exact GitHub repository (existing URL/name, or approval to create a new one)

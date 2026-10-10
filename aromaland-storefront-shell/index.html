@@ -18,7 +18,7 @@
       <span class="brand-mark" aria-hidden="true">A</span>
       <span>AROMALAND<small>nature, bottled</small></span>
     </a>
-    <button class="icon-button" id="cartButton" aria-label="Open demo bag">Bag <span id="bagCount">0</span></button>
+    <div class="header-actions"><button class="icon-button" id="menuButton" aria-label="Explore all departments">Explore</button><button class="icon-button" id="cartButton" aria-label="Open demo bag">Bag <span id="bagCount">0</span></button></div>
   </header>
 
   <main id="app">
@@ -28,9 +28,13 @@
       <p>Explore aromatic essentials by purpose, scent family, or product type—without the guesswork.</p>
       <button class="primary" data-action="start-quiz">Find your scent <span>→</span></button>
       <button class="text-link" data-scroll="shop">Or browse the collection</button>
-      <div class="hero-art" aria-hidden="true">
-        <div class="sun"></div><div class="bottle"><span>A</span></div><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i>
-      </div>
+      <figure class="hero-photo"><img src="assets/images/hero-essential-oils.jpg" alt="Aromaland essential oil collection displayed with aromatic flowers" /><figcaption>From the Aromaland collection</figcaption></figure>
+    </section>
+
+    <section class="departments" id="departments">
+      <div class="section-heading row"><div><span class="eyebrow">Everything they make</span><h2>Five clear departments</h2></div><button class="text-link" data-action="open-menu">Full menu</button></div>
+      <p class="section-intro">The complete live-store catalog, reorganized around quick, plain-language choices.</p>
+      <div class="department-grid" id="departmentGrid"></div>
     </section>
 
     <section class="browse" id="shop">
@@ -69,6 +73,7 @@
   </aside>
   <aside class="sheet" id="productSheet" aria-hidden="true" aria-label="Product details"><div class="sheet-handle"></div><button class="close" data-close aria-label="Close">×</button><div id="productContent"></div></aside>
   <aside class="sheet" id="cartSheet" aria-hidden="true" aria-label="Demo bag"><div class="sheet-handle"></div><button class="close" data-close aria-label="Close">×</button><div id="cartContent"></div></aside>
+  <aside class="sheet menu-sheet" id="menuSheet" aria-hidden="true" aria-label="Explore Aromaland departments"><div class="sheet-handle"></div><button class="close" data-close aria-label="Close">×</button><div id="menuContent"></div></aside>
 
   <script src="app.js"></script>
 </body>
