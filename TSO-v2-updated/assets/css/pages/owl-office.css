@@ -1,0 +1,1620 @@
+.office-page {
+  width: min(100%, 900px);
+}
+
+.office-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.office-heading img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.office-heading p,
+.office-eyebrow {
+  margin: 0 0 3px;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.office-heading h1 {
+  margin: 0;
+  color: var(--owl-gold);
+  font-size: clamp(2rem, 7vw, 3rem) !important;
+}
+
+.office-gate,
+.office-profile-card,
+.office-action,
+.office-dialog-card {
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  background:
+    linear-gradient(145deg, rgba(47, 71, 110, 0.45), rgba(12, 28, 47, 0.72));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 16px 38px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
+.office-gate {
+  display: grid;
+  justify-items: center;
+  width: min(100%, 560px);
+  margin: 20px auto;
+  padding: 34px 24px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.office-gate[hidden] {
+  display: none;
+}
+
+.office-gate h2 {
+  margin: 16px 0 6px;
+  color: var(--owl-gold);
+}
+
+.office-gate p {
+  margin: 0;
+  color: var(--owl-muted);
+}
+
+.office-gate .office-button {
+  margin-top: 20px;
+}
+
+.office-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(212, 175, 55, 0.22);
+  border-top-color: var(--owl-gold);
+  border-radius: 50%;
+  animation: office-spin 700ms linear infinite;
+}
+
+@keyframes office-spin {
+  to { transform: rotate(360deg); }
+}
+
+.office-workspace {
+  display: grid;
+  gap: 20px;
+}
+
+.office-workspace[hidden] {
+  display: none;
+}
+
+.office-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.office-action {
+  display: flex;
+  align-items: center;
+  min-height: 92px;
+  padding: 18px;
+  border-radius: 18px;
+  color: var(--owl-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.office-action:hover {
+  border-color: rgba(212, 175, 55, 0.8);
+  background:
+    linear-gradient(145deg, rgba(58, 84, 127, 0.55), rgba(16, 34, 55, 0.82));
+}
+
+.office-action > svg,
+.office-action-icon > svg {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  margin-right: 14px;
+  fill: none;
+  stroke: var(--owl-gold);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.office-action-icon {
+  position: relative;
+  display: inline-flex;
+}
+
+.office-action span:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.office-action strong {
+  color: var(--owl-gold);
+  font-size: 1.08rem;
+}
+
+.office-action small {
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+}
+
+.office-badge {
+  position: absolute;
+  top: -8px;
+  right: 4px;
+  display: grid;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  place-items: center;
+  border: 2px solid var(--owl-header);
+  border-radius: 999px;
+  background: #e45b5b;
+  color: white;
+  font: 800 10px/1 Inter, sans-serif;
+}
+
+.office-badge[hidden] {
+  display: none;
+}
+
+.office-profile-card {
+  display: grid;
+  grid-template-columns: 184px minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  padding: 26px;
+  border-radius: 22px;
+}
+
+.office-profile-image-frame {
+  width: 180px;
+  height: 180px;
+  padding: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.72);
+  border-radius: 22px;
+  background: rgba(8, 19, 34, 0.68);
+}
+
+.office-profile-image-frame img {
+  width: 100%;
+  height: 100%;
+  border-radius: 17px;
+  object-fit: cover;
+}
+
+.office-profile-copy h2 {
+  margin: 0 0 8px;
+  color: var(--owl-gold);
+  font-size: 1.7rem;
+}
+
+.office-profile-copy > p:not(.office-eyebrow) {
+  margin: 0;
+  color: var(--owl-muted);
+}
+
+.office-profile-buttons,
+.office-account-actions,
+.office-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.office-account-actions {
+  justify-content: center;
+  margin-top: 0;
+}
+
+.office-button,
+.office-refresh-button,
+.office-inbox-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px 17px;
+  border-radius: 12px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.office-button:disabled,
+.office-refresh-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.office-button[hidden] {
+  display: none;
+}
+
+.office-button--primary {
+  border: 1px solid var(--owl-gold);
+  background: var(--owl-gold);
+  color: var(--owl-navy);
+}
+
+.office-button--secondary,
+.office-refresh-button {
+  border: 1px solid rgba(212, 175, 55, 0.66);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--owl-gold);
+}
+
+.office-button--danger {
+  border: 1px solid rgba(255, 138, 138, 0.75);
+  background: rgba(255, 138, 138, 0.04);
+  color: var(--owl-danger);
+}
+
+.office-dialog {
+  width: min(92vw, 520px);
+  max-height: min(90vh, 900px);
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: var(--owl-body);
+}
+
+.office-dialog--wide {
+  width: min(94vw, 700px);
+}
+
+.office-dialog--inbox {
+  width: min(96vw, 860px);
+}
+
+.office-dialog--news {
+  width: min(97vw, 1180px);
+}
+
+.office-dialog--confirm {
+  width: min(90vw, 430px);
+}
+
+.office-dialog::backdrop {
+  background: rgba(2, 8, 17, 0.76);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.office-dialog-card {
+  position: relative;
+  max-height: min(90vh, 900px);
+  padding: 28px;
+  overflow-y: auto;
+  border-radius: 24px;
+}
+
+.office-dialog-card h2 {
+  margin: 0 44px 22px 0;
+  color: var(--owl-gold);
+  font-size: 1.65rem;
+}
+
+.office-dialog-card label {
+  display: block;
+  margin: 15px 0 6px;
+  color: var(--owl-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.office-dialog-card label span {
+  color: var(--owl-muted);
+  font-weight: 500;
+}
+
+.office-dialog-card input,
+.office-dialog-card textarea,
+.office-dialog-card select,
+.office-inbox-card select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(212, 175, 55, 0.46);
+  border-radius: 12px;
+  background: rgba(7, 18, 32, 0.78);
+  color: var(--owl-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+}
+
+.office-dialog-card textarea {
+  resize: vertical;
+}
+
+.office-field-help {
+  margin: 14px 0 0;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.office-dialog-card > .office-button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.office-dialog-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--owl-muted);
+  font-size: 29px;
+  cursor: pointer;
+}
+
+.office-form-message,
+.office-inbox-message {
+  min-height: 24px;
+  margin: 12px 0 0;
+  color: var(--owl-danger);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.office-post-preview {
+  display: block;
+  width: min(100%, 300px);
+  max-height: 240px;
+  margin: 14px auto 0;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.office-post-preview[hidden] {
+  display: none;
+}
+
+.office-inbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.office-inbox-tabs {
+  display: flex;
+  padding: 3px;
+  border: 1px solid rgba(124, 138, 155, 0.5);
+  border-radius: 12px;
+  background: rgba(6, 19, 34, 0.65);
+}
+
+.office-inbox-tabs button {
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--owl-muted);
+}
+
+.office-inbox-tabs button[aria-pressed="true"] {
+  background: var(--owl-gold);
+  color: var(--owl-navy);
+}
+
+.office-inbox-list {
+  display: grid;
+  gap: 12px;
+}
+
+.office-inbox-card {
+  padding: 17px;
+  border: 1px solid rgba(124, 138, 155, 0.42);
+  border-radius: 16px;
+  background: rgba(9, 24, 41, 0.72);
+}
+
+.office-inbox-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.office-inbox-card h3 {
+  margin: 0;
+  color: var(--owl-gold);
+  font-size: 1.12rem;
+}
+
+.office-inbox-card time,
+.office-inbox-meta {
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.79rem;
+}
+
+.office-inbox-card p {
+  margin: 10px 0;
+}
+
+.office-inbox-take {
+  padding-left: 12px;
+  border-left: 2px solid rgba(212, 175, 55, 0.58);
+  color: var(--owl-muted);
+}
+
+.office-inbox-card select {
+  max-width: 190px;
+  margin-top: 8px;
+}
+
+.office-empty {
+  padding: 30px 18px;
+  color: var(--owl-muted);
+  text-align: center;
+}
+
+.office-confirm-actions {
+  justify-content: flex-end;
+}
+
+.office-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10050;
+  max-width: min(88vw, 420px);
+  padding: 12px 16px;
+  border: 1px solid rgba(212, 175, 55, 0.52);
+  border-radius: 12px;
+  background: rgba(10, 25, 43, 0.96);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38);
+  color: var(--owl-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.office-toast[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.office-news-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.office-news-tabs {
+  display: flex;
+  min-width: 0;
+  gap: 20px;
+  padding: 0;
+  overflow-x: auto;
+  border: 0;
+  border-bottom: 1px solid rgba(124, 138, 155, 0.32);
+  border-radius: 0;
+  background: transparent;
+}
+
+.office-news-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 42px;
+  padding: 8px 1px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--owl-muted);
+  cursor: pointer;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.office-news-tabs button[aria-pressed="true"] {
+  border-color: var(--owl-gold);
+  background: transparent;
+  color: var(--owl-gold);
+}
+
+.office-news-tabs span {
+  min-width: auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--owl-dim);
+  font-size: 0.72rem;
+}
+
+.office-source-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(124, 138, 155, 0.28);
+}
+
+.office-source-filters {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.office-source-filter-label {
+  flex: 0 0 auto;
+  color: var(--owl-dim);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.office-source-filters button,
+.office-source-add,
+.office-news-text-action {
+  min-height: 34px;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--owl-muted);
+  cursor: pointer;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.office-source-filters button:hover,
+.office-source-add:hover,
+.office-news-text-action:hover {
+  color: var(--owl-gold);
+}
+
+.office-source-filters button[aria-pressed="true"] {
+  border-bottom-width: 2px;
+  border-color: var(--owl-gold);
+  color: var(--owl-gold);
+}
+
+.office-source-filters span {
+  margin-left: 2px;
+  color: var(--owl-dim);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.office-source-add {
+  flex: 0 0 auto;
+  color: var(--owl-gold);
+}
+
+.office-source-add span {
+  margin-right: 3px;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.office-news-message {
+  min-height: 24px;
+  margin: 8px 0 12px;
+  color: var(--owl-danger);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.office-news-panel[hidden] {
+  display: none;
+}
+
+.office-desk-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
+  margin: 4px 0 18px;
+}
+
+.office-desk-search input,
+.office-manage-search {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  border: 1px solid rgba(212, 175, 55, 0.38);
+  border-radius: 12px;
+  background: rgba(7, 18, 32, 0.78);
+  color: var(--owl-body);
+  font: 400 16px/1.3 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-desk-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.office-desk-metrics button {
+  display: grid;
+  gap: 3px;
+  min-height: 88px;
+  padding: 15px;
+  border: 1px solid rgba(124, 138, 155, 0.34);
+  border-radius: 15px;
+  background: linear-gradient(145deg, rgba(25, 49, 80, 0.7), rgba(8, 24, 42, 0.74));
+  color: var(--owl-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.office-desk-metrics button:hover {
+  border-color: rgba(212, 175, 55, 0.62);
+}
+
+.office-desk-metrics strong {
+  color: var(--owl-gold);
+  font: 700 1.7rem/1 Georgia, "Times New Roman", serif;
+}
+
+.office-desk-metrics span {
+  font: 700 0.78rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(250px, 0.75fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.office-dashboard-section {
+  padding: 16px;
+  border: 1px solid rgba(124, 138, 155, 0.34);
+  border-radius: 17px;
+  background: rgba(8, 23, 40, 0.52);
+}
+
+.office-dashboard-heading,
+.office-subject-card-top,
+.office-manage-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.office-dashboard-heading {
+  margin-bottom: 12px;
+}
+
+.office-dashboard-heading h3,
+.office-manage-header h3,
+.office-news-panel-heading h3 {
+  margin: 2px 0 0;
+  color: var(--owl-body);
+  font-size: 1.15rem;
+}
+
+.office-section-kicker {
+  margin: 0 !important;
+  color: var(--owl-gold) !important;
+  font: 800 0.68rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.office-subject-dashboard {
+  display: grid;
+  gap: 10px;
+}
+
+.office-coverage-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 14px;
+  margin: 0 0 14px;
+}
+
+.office-coverage-controls > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.office-coverage-controls button {
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 1px solid rgba(124, 138, 155, 0.38);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--owl-body);
+  font: 800 0.82rem/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+}
+
+.office-coverage-controls button[aria-pressed="true"] {
+  border-color: var(--owl-gold);
+  background: var(--owl-gold);
+  color: #0b1c3d;
+}
+
+.office-coverage-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.office-coverage-total {
+  padding: 8px 11px;
+  border: 1px solid rgba(124, 138, 155, 0.24);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--owl-muted);
+  font: 700 0.78rem/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-coverage-total strong {
+  margin-right: 4px;
+  color: var(--owl-gold);
+  font-size: 1rem;
+}
+
+.office-subject-card,
+.office-story-card {
+  padding: 15px;
+  border: 1px solid rgba(124, 138, 155, 0.35);
+  border-radius: 14px;
+  background: rgba(9, 24, 41, 0.76);
+}
+
+.office-subject-card h4 {
+  margin: 0;
+  color: var(--owl-gold);
+  font: 700 1rem/1.25 Georgia, "Times New Roman", serif;
+}
+
+.office-subject-card p,
+.office-story-card p {
+  margin: 5px 0 0;
+  color: var(--owl-muted);
+  font: 400 0.82rem/1.4 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-subject-card ul {
+  display: grid;
+  gap: 5px;
+  margin: 11px 0 0;
+  padding: 10px 0 0 18px;
+  border-top: 1px solid rgba(124, 138, 155, 0.24);
+  color: var(--owl-body);
+  font: 400 0.82rem/1.35 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-subject-sources {
+  color: var(--owl-dim) !important;
+}
+
+.office-dashboard-queue #office-dashboard-queue {
+  display: grid;
+  gap: 8px;
+}
+
+.office-dashboard-queue #office-dashboard-queue button {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(124, 138, 155, 0.28);
+  border-radius: 12px;
+  background: rgba(9, 24, 41, 0.72);
+  color: var(--owl-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.office-dashboard-queue strong {
+  color: var(--owl-gold);
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+.office-dashboard-queue span {
+  font: 650 0.78rem/1.3 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-manage-header {
+  margin-bottom: 16px;
+}
+
+.office-manage-header p {
+  margin: 6px 0 0;
+  color: var(--owl-muted);
+  font: 400 0.88rem/1.45 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-manage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.office-manage-grid button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px 12px;
+  padding: 18px;
+  border: 1px solid rgba(124, 138, 155, 0.38);
+  border-radius: 15px;
+  background: rgba(9, 24, 41, 0.72);
+  color: var(--owl-body);
+  cursor: pointer;
+  text-align: left;
+}
+
+.office-manage-grid button:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+}
+
+.office-manage-grid strong,
+.office-manage-grid span {
+  color: var(--owl-gold);
+}
+
+.office-manage-grid small {
+  grid-column: 1 / -1;
+  color: var(--owl-muted);
+  font: 400 0.8rem/1.4 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-manage-search {
+  margin: 0 0 14px;
+}
+
+.office-insight-scope-picker {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 14px;
+  padding: 14px;
+  border: 1px solid rgba(124, 138, 155, 0.38);
+  border-radius: 14px;
+}
+
+.office-insight-scope-picker legend {
+  padding: 0 6px;
+  color: var(--owl-body);
+  font-weight: 700;
+}
+
+.office-insight-scope-picker label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1px 9px;
+  margin: 0;
+  padding: 8px;
+  border-radius: 10px;
+  color: var(--owl-body);
+  cursor: pointer;
+}
+
+.office-insight-scope-picker label:has(input:checked) {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.office-insight-scope-picker input {
+  grid-row: 1 / 3;
+  align-self: center;
+  width: 18px;
+  height: 18px;
+}
+
+.office-insight-scope-picker small,
+.office-insight-reach {
+  color: var(--owl-muted);
+  font: 400 0.78rem/1.35 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-insight-reach {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-left: 2px solid var(--owl-gold);
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.office-taxonomy-filters {
+  display: flex;
+  gap: 14px;
+  margin: 0 0 14px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(124, 138, 155, 0.28);
+}
+
+.office-taxonomy-filters button {
+  min-height: 38px;
+  padding: 6px 1px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--owl-muted);
+  font: 700 0.8rem/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.office-taxonomy-filters button[aria-pressed="true"] {
+  border-color: var(--owl-gold);
+  color: var(--owl-gold);
+}
+
+.office-inline-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.office-inline-entry input,
+.office-inline-entry select {
+  min-width: 0;
+}
+
+.office-tag-review-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.office-tag-review-card {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border: 1px solid rgba(124, 138, 155, 0.4);
+  border-radius: 14px;
+  background: rgba(9, 24, 41, 0.72);
+}
+
+.office-tag-review-card strong {
+  color: var(--owl-gold);
+}
+
+.office-tag-review-card span,
+.office-tag-review-card small {
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-right-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 15px;
+}
+
+.office-right-options .office-check-field {
+  margin: 0;
+}
+
+#office-reusable-story,
+#office-article-coverage-groups {
+  min-height: 220px;
+}
+
+.office-news-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.office-news-panel-heading p {
+  margin: 0;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+}
+
+.office-news-list {
+  display: grid;
+  gap: 12px;
+}
+
+.office-filter-notice {
+  margin: 0;
+  padding: 10px 13px;
+  border-left: 2px solid var(--owl-gold);
+  background: rgba(212, 175, 55, 0.06);
+  color: var(--owl-muted);
+  font: 600 0.82rem/1.4 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#office-news-item-list .office-news-card,
+#office-reusable-insight-list .office-news-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 18px;
+  align-items: start;
+}
+
+#office-news-item-list .office-news-card-header,
+#office-reusable-insight-list .office-news-card-header {
+  grid-column: 1 / -1;
+}
+
+#office-news-item-list .office-news-card > p,
+#office-reusable-insight-list .office-news-card > p {
+  grid-column: 1;
+}
+
+#office-news-item-list .office-news-card > p:nth-of-type(2) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+#office-news-item-list .office-news-card-actions,
+#office-reusable-insight-list .office-news-card-actions {
+  grid-column: 1 / -1;
+}
+
+#office-taxonomy-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#office-taxonomy-list .office-news-card {
+  padding: 14px;
+}
+
+#office-taxonomy-list .office-news-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.office-news-card {
+  padding: 16px;
+  border: 1px solid rgba(124, 138, 155, 0.42);
+  border-radius: 16px;
+  background: rgba(9, 24, 41, 0.72);
+}
+
+.office-news-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.office-news-card h3 {
+  margin: 0;
+  color: var(--owl-gold);
+  font-size: 1.08rem;
+  line-height: 1.25;
+}
+
+.office-news-card p {
+  margin: 8px 0 0;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.87rem;
+  line-height: 1.45;
+}
+
+.office-news-card a,
+.office-insight-link {
+  display: inline-block;
+  margin: 8px 12px 0 0;
+  color: var(--owl-gold);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+}
+
+.office-news-status {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border: 1px solid rgba(212, 175, 55, 0.48);
+  border-radius: 999px;
+  color: var(--owl-gold);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.office-news-status[data-status="active"],
+.office-news-status[data-status="live"],
+.office-news-status[data-status="published"] {
+  border-color: rgba(46, 211, 95, 0.52);
+  color: var(--owl-truth);
+}
+
+.office-news-status[data-status="rejected"],
+.office-news-status[data-status="removed"],
+.office-news-status[data-status="failed"] {
+  border-color: rgba(255, 138, 138, 0.62);
+  color: var(--owl-danger);
+}
+
+.office-news-card-controls,
+.office-news-card-actions,
+.office-insight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.office-news-card-controls > label {
+  flex: 1 1 180px;
+  margin: 0;
+}
+
+.office-news-card-controls input,
+.office-news-card-controls select,
+.office-news-card-controls textarea,
+.office-news-filters input,
+.office-news-filters select {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 5px;
+  padding: 10px 12px;
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  border-radius: 11px;
+  background: rgba(7, 18, 32, 0.78);
+  color: var(--owl-body);
+  font: 400 16px/1.3 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-news-card-actions .office-button,
+.office-insight-actions .office-button {
+  min-height: 42px;
+  padding: 8px 13px;
+}
+
+.office-news-card-actions .office-news-text-action {
+  min-height: 34px;
+  padding: 4px 1px;
+  border-width: 0 0 1px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.office-news-article-actions {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  padding: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 15px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(17, 34, 64, 0.48));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.17),
+    0 10px 26px rgba(0, 0, 0, 0.2),
+    0 0 16px rgba(212, 175, 55, 0.07);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
+}
+
+.office-news-article-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  flex: 1 1 0;
+  min-height: 46px;
+  padding: 8px 11px;
+  border: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.11);
+  background: transparent;
+  color: var(--owl-gold);
+  cursor: pointer;
+  font: 750 0.84rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-decoration: none;
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.office-news-article-action:first-child {
+  border-left: 0;
+}
+
+.office-news-article-action svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.office-news-article-action:hover,
+.office-news-article-action:focus-visible {
+  background: rgba(212, 175, 55, 0.1);
+  color: #f4d66c;
+}
+
+.office-news-filters {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.8fr) minmax(200px, 1.3fr) auto;
+  align-items: end;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.office-search-results {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 48px;
+  margin: -2px 0 14px;
+}
+
+.office-search-results p {
+  margin: 0;
+  color: var(--owl-muted);
+  font: 700 0.9rem/1.35 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-search-results .office-refresh-button {
+  flex: 0 0 auto;
+  min-width: 132px;
+}
+
+.office-search-match {
+  color: var(--owl-muted);
+  font: 700 0.78rem/1.3 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-panel-heading-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.office-panel-heading-actions p {
+  max-width: 520px;
+  margin: 0;
+}
+
+.office-bulk-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 11px 12px;
+  border: 1px solid rgba(124, 138, 155, 0.32);
+  border-radius: 14px;
+  background: rgba(9, 24, 41, 0.72);
+}
+
+.office-bulk-toolbar strong {
+  color: var(--owl-gold);
+  font: 750 0.82rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  white-space: nowrap;
+}
+
+.office-bulk-toolbar select {
+  min-width: 0;
+  margin: 0;
+}
+
+.office-article-title-wrap {
+  min-width: 0;
+}
+
+#office-news-item-list .office-news-card-header {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: start;
+  justify-content: normal;
+  gap: 11px;
+  width: 100%;
+  min-width: 0;
+}
+
+#office-news-item-list .office-article-selector {
+  box-sizing: border-box;
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  height: 20px;
+  min-height: 20px;
+  margin: 2px 0 0;
+  padding: 0;
+  border: 1px solid rgba(212, 175, 55, 0.58);
+  border-radius: 6px;
+  accent-color: var(--owl-gold);
+}
+
+#office-news-item-list .office-article-title-wrap h3 {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+#office-news-item-list .office-news-status {
+  max-width: 130px;
+  white-space: nowrap;
+}
+
+#office-news-item-list .office-news-card {
+  overflow: hidden;
+}
+
+.office-coverage-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 11px 0 2px;
+}
+
+.office-coverage-chip-row span {
+  padding: 5px 9px;
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.07);
+  color: var(--owl-muted);
+  font: 650 0.72rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-coverage-signals {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid rgba(124, 138, 155, 0.28);
+  border-radius: 12px;
+  background: rgba(7, 18, 32, 0.44);
+}
+
+.office-coverage-signals:empty {
+  display: none;
+}
+
+.office-coverage-signals > strong {
+  color: var(--owl-body);
+  font: 750 0.78rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+}
+
+.office-check-field {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-top: 32px !important;
+  padding: 10px 12px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+}
+
+.office-check-field input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.office-insight-source,
+.office-source-request-details {
+  margin: -12px 0 0;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-source-request-details {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border-left: 2px solid rgba(212, 175, 55, 0.58);
+}
+
+.office-source-request-details[hidden] {
+  display: none;
+}
+
+.office-insight-link[hidden],
+.office-insight-actions .office-button[hidden] {
+  display: none;
+}
+
+.office-insight-actions {
+  justify-content: flex-end;
+}
+
+@media (max-width: 650px) {
+  .office-heading {
+    gap: 10px;
+  }
+
+  .office-heading img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .office-actions,
+  .office-profile-card {
+    grid-template-columns: 1fr;
+  }
+
+  .office-action {
+    min-height: 82px;
+  }
+
+  .office-profile-card {
+    justify-items: center;
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .office-profile-image-frame {
+    width: 156px;
+    height: 156px;
+  }
+
+  .office-profile-buttons,
+  .office-account-actions {
+    justify-content: stretch;
+  }
+
+  .office-profile-buttons .office-button,
+  .office-account-actions .office-button {
+    flex: 1 1 100%;
+  }
+
+  .office-dialog-card {
+    padding: 24px 17px 18px;
+  }
+
+  .office-inbox-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .office-inbox-tabs button {
+    flex: 1;
+  }
+
+  .office-inbox-card-header {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .office-news-toolbar,
+  .office-news-panel-heading,
+  .office-news-card-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .office-news-tabs {
+    width: 100%;
+  }
+
+  .office-news-tabs button {
+    flex: 1 0 auto;
+  }
+
+  .office-source-toolbar {
+    align-items: stretch;
+    flex-direction: column-reverse;
+    gap: 6px;
+  }
+
+  .office-source-add {
+    align-self: flex-end;
+  }
+
+  .office-news-filters,
+  .office-desk-search,
+  .office-bulk-toolbar,
+  .office-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .office-search-results {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .office-search-results .office-refresh-button {
+    width: 100%;
+  }
+
+  .office-panel-heading-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .office-desk-metrics,
+  .office-manage-grid,
+  .office-dashboard-grid,
+  #office-taxonomy-list {
+    grid-template-columns: 1fr;
+  }
+
+  .office-insight-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .office-insight-actions .office-button {
+    width: 100%;
+  }
+
+  .office-news-card-actions {
+    display: flex;
+  }
+
+  .office-news-article-actions {
+    display: flex;
+  }
+
+  .office-check-field {
+    margin-top: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .office-spinner {
+    animation: none;
+  }
+}

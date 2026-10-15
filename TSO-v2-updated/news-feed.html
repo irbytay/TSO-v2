@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>News Feed | The Strategic Owl</title>
+  <meta name="description" content="A personalized political news reader with source context and Owl Insights." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261015-1" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260922-3" />
+  <script src="assets/js/site-shell.js?v=20261015-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20261015-1" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260920-5" defer></script>
+</head>
+<body class="site-body" data-page="news-feed">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="site-page site-page--news-feed" tabindex="-1">
+    <header class="news-heading">
+      <img class="news-page-mark" src="assets/images/3X.png" alt="" />
+      <div class="news-heading-row">
+        <h1>News Feed</h1>
+        <nav class="news-feed-toolbar" id="news-feed-toolbar" aria-label="News Feed controls" hidden>
+          <a class="news-manage-sources" href="news-sources.html" aria-label="Choose and manage your news sources">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle>
+              <path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle>
+            </svg>
+            <span>My Sources</span>
+          </a>
+          <button class="news-refresh-icon" id="news-refresh" type="button" aria-label="Refresh News Feed" title="Refresh News Feed">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
+          </button>
+        </nav>
+      </div>
+
+      <p class="news-pull-hint" id="news-pull-hint" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"></path><path d="m7 11 5 5 5-5"></path></svg>
+        <span>Pull down to refresh</span>
+      </p>
+    </header>
+
+    <section class="news-gate" id="news-gate" aria-live="polite">
+      <div class="news-spinner" aria-hidden="true"></div>
+      <h2>Opening News Feed…</h2>
+    </section>
+
+    <section class="news-workspace" id="news-workspace" hidden>
+      <div class="news-pull-indicator" id="news-pull-indicator" aria-hidden="true">
+        <span>
+          <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
+        </span>
+      </div>
+
+      <section class="news-reader-section news-reader-section--stream" aria-label="News articles">
+        <div class="news-feed-filter" id="news-feed-filter" hidden>
+          <label class="news-source-filter-control" for="news-source-filter">
+            <span class="news-source-filter-label">Show stories from</span>
+            <select id="news-source-filter" aria-label="Filter News Feed by source">
+              <option value="">All Followed Sources</option>
+            </select>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
+          </label>
+        </div>
+        <p class="news-status" id="news-status" role="status" aria-live="polite"></p>
+        <div class="news-item-list" id="news-item-list">
+          <p class="news-empty">Loading news…</p>
+        </div>
+        <div class="news-load-more" id="news-load-more" role="status" aria-live="polite" hidden>
+          <span class="news-load-more-spinner" aria-hidden="true"></span>
+          <span>Loading more stories</span>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <dialog class="news-dialog news-reader-dialog" id="news-reader-dialog" aria-labelledby="news-reader-title">
+    <section class="news-reader-shell">
+      <header class="news-reader-header">
+        <button class="news-reader-back" type="button" data-close-news-reader aria-label="Return to the News Feed">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          <span>News Feed</span>
+        </button>
+        <span>Owl Reader</span>
+        <button class="news-reader-theme" id="news-reader-theme" type="button" aria-label="Use dark reading mode" title="Use dark reading mode">
+          <svg class="news-reader-theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"></path></svg>
+          <svg class="news-reader-theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        </button>
+      </header>
+      <article class="news-reader-paper">
+        <h2 id="news-reader-title">Article</h2>
+        <p class="news-reader-attribution" id="news-reader-attribution"></p>
+        <div class="news-reader-top-actions">
+          <button class="news-reader-original-top" id="news-reader-original-top" type="button">Source</button>
+          <button class="news-reader-prompt" id="news-reader-copy-prompt" type="button"><span>Research Prompt</span></button>
+        </div>
+        <p class="news-reader-message" id="news-reader-message" role="status" aria-live="polite"></p>
+        <div class="news-reader-copy" id="news-reader-copy"></div>
+        <footer class="news-reader-footer">
+          <button class="news-reader-prompt news-reader-prompt-bottom" id="news-reader-copy-prompt-bottom" type="button"><span>Copy Research Prompt</span></button>
+          <button class="news-reader-original" id="news-reader-original" type="button"></button>
+        </footer>
+      </article>
+    </section>
+  </dialog>
+
+  <dialog class="news-dialog news-leaving-dialog" id="news-leaving-dialog" aria-labelledby="news-leaving-title">
+    <section class="news-leaving-card">
+      <p class="news-eyebrow">Original Source</p>
+      <h2 id="news-leaving-title">Leaving The Strategic Owl</h2>
+      <p>The publisher’s advertising, subscription, and privacy practices may apply.</p>
+      <div class="news-leaving-actions">
+        <button class="news-leaving-cancel" type="button" data-close-news-leaving>Stay Here</button>
+        <button class="news-leaving-continue" id="news-leaving-continue" type="button">Continue to Source</button>
+      </div>
+    </section>
+  </dialog>
+
+  <dialog class="news-dialog news-dialog--insight" id="news-insight-dialog" aria-labelledby="news-insight-title">
+    <form class="news-dialog-card" id="news-insight-form">
+      <button class="news-dialog-close" type="button" data-close-news-insight aria-label="Close">×</button>
+      <p class="news-eyebrow">Article Analysis</p>
+      <h2 id="news-insight-title">Owl Insight</h2>
+      <p class="news-insight-source" id="news-insight-source"></p>
+      <button class="news-insight-original" id="news-insight-original" type="button">Read Original</button>
+      <input id="news-insight-item-id" name="itemId" type="hidden" />
+
+      <label for="news-insight-label">Owl label <span>(optional)</span></label>
+      <input id="news-insight-label" name="owlLabel" maxlength="120" placeholder="What readers should notice" />
+
+      <label for="news-insight-analysis">Your analysis</label>
+      <textarea id="news-insight-analysis" name="owlAnalysis" rows="6" maxlength="12000" required></textarea>
+
+      <fieldset class="news-insight-scope">
+        <legend>Applies to</legend>
+        <div class="news-insight-scope-options">
+          <label class="news-insight-scope-option">
+            <input type="radio" name="insightScope" value="article" checked />
+            <span>This article</span>
+            <small>Only this article</small>
+          </label>
+          <label class="news-insight-scope-option">
+            <input type="radio" name="insightScope" value="cluster" />
+            <span>Developing story</span>
+            <small>Related coverage</small>
+          </label>
+          <label class="news-insight-scope-option">
+            <input type="radio" name="insightScope" value="subject" />
+            <span>Matching subjects</span>
+            <small>Current and future matches</small>
+          </label>
+        </div>
+      </fieldset>
+
+      <section class="news-insight-story" id="news-insight-story-panel" hidden>
+        <label for="news-insight-story-select">Developing story</label>
+        <select id="news-insight-story-select">
+          <option value="">Choose a developing story</option>
+        </select>
+        <p class="news-insight-taxonomy-help" id="news-insight-story-help">Confirmed and suggested matches from this article appear first.</p>
+        <button class="news-insight-add-subject" id="news-insight-create-story" type="button">Start a developing story with this article</button>
+      </section>
+
+      <fieldset class="news-insight-taxonomy" id="news-insight-subject-panel" hidden>
+        <legend>Matching subjects</legend>
+        <p class="news-insight-taxonomy-help">Suggested from this article. Strong matches are already selected.</p>
+        <div class="news-insight-taxonomy-options" id="news-insight-subjects"></div>
+        <button class="news-insight-add-subject" id="news-insight-add-subject" type="button">Add another subject</button>
+        <div class="news-insight-taxonomy-search" id="news-insight-taxonomy-search" hidden>
+          <input id="news-insight-subject-search" type="search" placeholder="Search subjects" aria-label="Search taxonomy subjects" />
+          <div class="news-insight-taxonomy-results" id="news-insight-taxonomy-results"></div>
+        </div>
+      </fieldset>
+
+      <div class="news-insight-settings">
+        <label for="news-insight-status">Status
+          <select id="news-insight-status" name="reviewStatus">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+        </label>
+        <label class="news-insight-public" for="news-insight-public">
+          <input id="news-insight-public" name="public" type="checkbox" />
+          <span>Available to readers</span>
+        </label>
+      </div>
+
+      <p class="news-form-message" id="news-insight-message" role="status" aria-live="polite"></p>
+      <div class="news-insight-actions">
+        <button class="news-insight-hide" id="news-insight-hide" type="button" hidden>Hide Insight</button>
+        <button class="news-access-button" id="news-insight-save" type="submit">Save Insight</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="news-toast" id="news-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>News Sources | The Strategic Owl</title>
+  <meta name="description" content="Choose the sources included in your Strategic Owl News Feed." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261015-1" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260912-10" />
+  <script src="assets/js/site-shell.js?v=20261015-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20261015-1" defer></script>
+  <script src="assets/js/pages/news-sources.js?v=20260910-2" defer></script>
+</head>
+<body class="site-body" data-page="news-feed">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="site-page site-page--news-feed news-sources-page" tabindex="-1">
+    <header class="news-sources-heading">
+      <a href="news-feed.html">← News Feed</a>
+      <h1>Sources</h1>
+    </header>
+
+    <section class="news-gate" id="news-sources-gate" aria-live="polite">
+      <div class="news-spinner" aria-hidden="true"></div>
+      <h2>Opening Sources…</h2>
+    </section>
+
+    <section class="news-sources-workspace" id="news-sources-workspace" hidden>
+      <p class="news-sources-intro">Choose what appears in your News Feed.</p>
+      <section class="news-source-dashboard" aria-label="Available source overview">
+        <div class="news-source-dashboard-heading">
+          <span class="news-source-dashboard-mark" aria-hidden="true">
+            <img src="assets/images/3X.png" alt="" />
+          </span>
+          <div>
+            <strong id="news-active-source-count">0 active sources</strong>
+            <p>Available for your News Feed</p>
+          </div>
+        </div>
+        <div class="news-source-dashboard-metrics" id="news-alignment-breakdown">
+          <span><strong id="news-left-source-count">0</strong><small>Left</small></span>
+          <span><strong id="news-middle-source-count">0</strong><small>Middle</small></span>
+          <span><strong id="news-right-source-count">0</strong><small>Right</small></span>
+          <span><strong id="news-primary-source-count">0</strong><small>Primary</small></span>
+        </div>
+        <p class="news-source-dashboard-note">Each source is labeled so you can choose your own mix.</p>
+      </section>
+
+      <div class="news-source-controls">
+        <nav class="news-source-viewpoints" aria-label="Filter sources by viewpoint">
+          <button type="button" data-source-group="all" aria-pressed="true">All</button>
+          <button type="button" data-source-group="left" aria-pressed="false">Left</button>
+          <button type="button" data-source-group="middle" aria-pressed="false">Middle</button>
+          <button type="button" data-source-group="right" aria-pressed="false">Right</button>
+          <button type="button" data-source-group="primary" aria-pressed="false">Primary</button>
+        </nav>
+        <button class="news-source-filter-toggle" id="news-source-filter-toggle" type="button" aria-expanded="false" aria-controls="news-source-filter-panel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle><path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle></svg>
+          <span>Filters</span>
+          <b id="news-source-filter-count" hidden>0</b>
+        </button>
+      </div>
+
+      <section class="news-source-filter-panel" id="news-source-filter-panel" aria-label="More source filters" hidden>
+        <label class="news-source-search-field" for="news-source-search">
+          <span>Source name</span>
+          <input id="news-source-search" type="search" autocomplete="off" placeholder="Search sources" />
+        </label>
+        <div class="news-source-filter-grid">
+          <label for="news-source-category-filter">Category
+            <select id="news-source-category-filter"><option value="">All categories</option></select>
+          </label>
+          <label for="news-source-content-filter">Content type
+            <select id="news-source-content-filter"><option value="">All content</option></select>
+          </label>
+          <label for="news-source-media-filter">Media type
+            <select id="news-source-media-filter"><option value="">All media</option></select>
+          </label>
+          <label for="news-source-access-filter">Article access
+            <select id="news-source-access-filter"><option value="">All access</option></select>
+          </label>
+        </div>
+        <button class="news-source-clear-filters" id="news-source-clear-filters" type="button">Clear filters</button>
+      </section>
+      <p class="news-source-summary" id="news-source-summary" role="status" aria-live="polite"></p>
+      <div class="news-source-groups" id="news-source-list">
+        <p class="news-empty">Loading sources…</p>
+      </div>
+
+      <section class="news-source-request-bar" aria-label="Source requests">
+        <p>Don’t see a source?</p>
+        <div>
+          <button class="news-text-button" id="news-request-open" type="button">Request a Source</button>
+          <button class="news-text-button" id="news-requests-toggle" type="button" aria-expanded="false" aria-controls="news-request-history">My Requests</button>
+        </div>
+      </section>
+
+      <div class="news-request-history" id="news-request-history" hidden>
+        <p class="news-empty">Open My Requests to view your request history.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <dialog class="news-dialog" id="news-request-dialog" aria-labelledby="news-request-dialog-title">
+    <form class="news-dialog-card" id="news-request-form">
+      <button class="news-dialog-close" type="button" data-close-news-dialog aria-label="Close">×</button>
+      <p class="news-eyebrow">Source Request</p>
+      <h2 id="news-request-dialog-title">Request a Source</h2>
+      <p class="news-dialog-intro">Only the source name is required.</p>
+
+      <label for="news-request-name">Source name</label>
+      <input id="news-request-name" name="sourceName" minlength="2" maxlength="120" required />
+
+      <label for="news-request-reason">Anything else you know? <span>(optional)</span></label>
+      <textarea id="news-request-reason" name="reason" rows="4" maxlength="500" placeholder="A website, social account, article, or where you saw it"></textarea>
+
+      <p class="news-form-message" id="news-request-message" role="status" aria-live="polite"></p>
+      <button class="news-access-button" id="news-request-submit" type="submit">Send Request</button>
+    </form>
+  </dialog>
+
+  <div class="news-toast" id="news-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl</title>
+  <meta name="description" content="Public-interest news coverage, voter resources, and founding documents from The Strategic Owl." />
+  <link rel="canonical" href="https://thestrategicowl.com/" />
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Compare news coverage, prepare to vote, and explore America’s founding documents." />
+  <meta property="og:image" content="https://thestrategicowl.com/TSO.png" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261015-1" />
+  <link rel="stylesheet" href="assets/css/pages/home.css?v=20261015-2" />
+  <script src="assets/js/site-shell.js?v=20261015-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20261015-1" defer></script>
+  <script src="assets/js/app-countdown.js?v=20260923-1" defer></script>
+  <script src="assets/js/pages/home.js?v=20261015-2" defer></script>
+</head>
+<body class="site-body" data-page="home">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+  <main id="main-content" class="site-page home-page" tabindex="-1">
+    <section class="home-hero" aria-labelledby="home-title">
+      <img src="assets/images/3X.png" alt="" />
+      <p class="owl-eyebrow">Truth · Reliability · Understanding</p>
+      <h1 id="home-title">The Strategic Owl</h1>
+      <p>News and civic information designed to help you look closer, compare carefully, and decide for yourself.</p>
+      <p class="owl-countdown-home" data-app-countdown="compact" aria-live="polite" hidden></p>
+    </section>
+
+    <section class="home-card home-card--latest" aria-labelledby="latest-title">
+      <div class="home-card-heading">
+        <div><p class="owl-eyebrow">Latest from the Owl</p><h2 id="latest-title">What’s new</h2></div>
+        <span id="mission-update-timestamp"></span>
+      </div>
+      <div class="home-update-list" id="mission-update-list" aria-live="polite">
+        <p class="home-muted">Gathering the latest update…</p>
+      </div>
+      <a class="home-primary-action" href="coverage.html">Open Coverage <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="home-card" id="civic-knowledge-card" aria-labelledby="civic-title">
+      <p class="owl-eyebrow">If You Didn’t Know</p>
+      <h2 id="civic-title">A civic thought for today</h2>
+      <div id="civic-knowledge-copy"><p class="home-muted">Loading today’s civic note…</p></div>
+      <a class="home-text-link" href="constitution.html">Explore the Constitution <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="home-card home-card--begin" aria-labelledby="begin-title">
+      <img src="assets/images/owl-mark.png" alt="" />
+      <div>
+        <p class="owl-eyebrow" id="begin-eyebrow">A Good Place to Begin</p>
+        <h2 id="begin-title">Compare today’s coverage</h2>
+        <p id="begin-copy">Start with Radar to see which stories are developing across more than one source.</p>
+      </div>
+      <a class="home-primary-action" id="continue-action" href="coverage.html">Open Radar <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="home-paths" aria-label="Explore The Strategic Owl">
+      <a href="coverage.html?view=feed"><strong>News Feed</strong><span>Newest reporting from all sources</span></a>
+      <a href="voter-resources.html"><strong>Voter Resources</strong><span>Election information and candidate lookup</span></a>
+      <a href="constitution.html"><strong>Constitution</strong><span>Founding text and plain-language context</span></a>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+</body>
+</html>
